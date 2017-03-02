@@ -98,3 +98,7 @@ module.exports = {
   ]
 }
 ```
+
+## TODO
+
+Add hooks for detecting changes in `.rei` and `.mli`. [Should be doable](https://webpack.js.org/api/loaders/#adddependency).
