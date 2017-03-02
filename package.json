@@ -1,0 +1,26 @@
+{
+  "name": "bs-loader",
+  "version": "1.0.0",
+  "description": "Bucklescript integration in Webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rrdelaney/bs-loader.git"
+  },
+  "keywords": [
+    "bucklescript",
+    "reason",
+    "webpack",
+    "ocaml",
+    "reasonml"
+  ],
+  "author": "Ryan Delaney <rrdelaney@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rrdelaney/bs-loader/issues"
+  },
+  "homepage": "https://github.com/rrdelaney/bs-loader#readme"
+}
