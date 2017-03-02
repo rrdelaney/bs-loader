@@ -38,10 +38,11 @@ We will also need `reason-js`, `rehydrate`, and `bs-platform`. Your `package.jso
 ```json
 {
   "name": "reason-webpack",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -49,13 +50,15 @@ We will also need `reason-js`, `rehydrate`, and `bs-platform`. Your `package.jso
     "bs-loader": "^1.0.0",
     "bs-platform": "^1.5.0",
     "reason-js": "0.0.16",
-    "rehydrate": "git+https://github.com/reasonml/rehydrate.git"
+    "rehydrate": "git+https://github.com/reasonml/rehydrate.git",
+    "webpack": "^2.2.1"
   },
   "dependencies": {
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   }
 }
+
 ```
 
 ## Using the loader
