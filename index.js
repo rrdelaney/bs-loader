@@ -10,7 +10,7 @@ const getJsFile = resourcePath => {
 }
 
 const runBsb = callback => {
-  execFile(bsb, (err, stdout, stderr) => {
+  execFile(bsb, ['-make-world'], (err, stdout, stderr) => {
     if (err) {
       callback(stdout, null)
     } else {
