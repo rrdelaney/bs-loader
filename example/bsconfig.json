@@ -1,0 +1,13 @@
+{
+  "name": "hello",
+  "sources": [
+    "src"
+  ],
+  "bs-dependencies": [
+    "reason-js",
+    "rehydrate"
+  ],
+  "reason": {
+    "react-jsx": true
+  }
+}
