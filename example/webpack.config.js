@@ -1,5 +1,4 @@
 const path = require('path')
-const BucklescriptPlugin = require('bs-loader/plugin')
 
 module.exports = {
   entry: './src/print.re',
@@ -14,8 +13,5 @@ module.exports = {
   },
   resolve: {
     extensions: ['.re', '.ml', '.js']
-  },
-  plugins: [
-    new BucklescriptPlugin()
-  ]
+  }
 }

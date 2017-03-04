@@ -21,16 +21,16 @@ const runBsb = callback => {
 
 module.exports = function () {
   const callback = this.async()
-
   const compiledFilePath = getJsFile(this.resourcePath)
 
-  runBsb((err, res) => {
-    if (err) return callback(err, res)
+  if (this._compilation._hasRunBsb) {
+    readFile(compiledFilePath, callback)
+  } else {
+    runBsb((err, res) => {
+      if (err) return callback(err, res)
 
-    readFile(compiledFilePath, (err, data) => {
-      if (err) return callback(err, null)
-
-      callback(null, data)
+      this._compilation._hasRunBsb = true
+      readFile(compiledFilePath, callback)
     })
-  })
+  }
 }

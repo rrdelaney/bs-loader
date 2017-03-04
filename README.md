@@ -66,14 +66,12 @@ We will also need `reason-js`, `rehydrate`, and `bs-platform`. Your `package.jso
 To use the loader you must:
 * Register the `.re` and `.ml` extensions with Webpack
 * Configure `.re` and `.ml` to use the loader
-* Use the BucklescriptPlugin
 
 An example config would look like:
 
 ```js
 // webpack.config.js
 const path = require('path')
-const BucklescriptPlugin = require('bs-loader/plugin')
 
 module.exports = {
   // Entry file can be a Reason or OCaml file
@@ -91,11 +89,7 @@ module.exports = {
   resolve: {
     // Add .re and .ml to the list of extensions webpack recognizes
     extensions: ['.re', '.ml', '.js']
-  },
-  plugins: [
-    // Register the BucklescriptPlugin
-    new BucklescriptPlugin()
-  ]
+  }
 }
 ```
 
