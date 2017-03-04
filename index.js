@@ -10,27 +10,20 @@ const getJsFile = resourcePath => {
 }
 
 const runBsb = callback => {
-  execFile(bsb, ['-make-world'], (err, stdout, stderr) => {
-    if (err) {
-      callback(stdout, null)
-    } else {
-      callback(null, stdout)
-    }
-  })
+  execFile(bsb, ['-make-world'], callback)
 }
 
 module.exports = function () {
+  this.addDependency(this.resourcePath + 'i')
   const callback = this.async()
   const compiledFilePath = getJsFile(this.resourcePath)
 
-  if (this._compilation._hasRunBsb) {
-    readFile(compiledFilePath, callback)
-  } else {
-    runBsb((err, res) => {
-      if (err) return callback(err, res)
-
-      this._compilation._hasRunBsb = true
+  runBsb((err, res) => {
+    if (err) {
+      this.emitError(res)
+      callback(err, null)
+    } else {
       readFile(compiledFilePath, callback)
-    })
-  }
+    }
+  })
 }
