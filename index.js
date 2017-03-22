@@ -8,7 +8,7 @@ const outputDir = 'lib'
 
 const getJsFile = (moduleDir, resourcePath) => {
   const mlFileName = resourcePath.replace(process.cwd(), '')
-  const jsFileName = mlFileName.replace(/.(ml|re)$/, '.js')
+  const jsFileName = mlFileName.replace(/\.(ml|re)$/, '.js')
   return path.join(process.cwd(), outputDir, moduleDir, jsFileName)
 }
 
