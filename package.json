@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/rrdelaney/bs-loader/issues"
   },
-  "homepage": "https://github.com/rrdelaney/bs-loader#readme"
+  "homepage": "https://github.com/rrdelaney/bs-loader#readme",
+  "dependencies": {
+    "loader-utils": "^1.1.0"
+  }
 }
