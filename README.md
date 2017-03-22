@@ -36,6 +36,7 @@ First create a `bsconfig.json` for Bucklescript:
 We will also need `reason-js`, `rehydrate`, and `bs-platform`. Your `package.json` should look something like this:
 
 ```json
+/* package.json */
 {
   "name": "reason-webpack",
   "private": true,
@@ -91,4 +92,12 @@ module.exports = {
     extensions: ['.re', '.ml', '.js']
   }
 }
+```
+
+To tell Webpack to load a module type that isn't JS (for example, `amd` or `goog`)
+give the loader a `module` option. For example, to use AMD modules produced by Bucklescript,
+use the config
+
+```js
+{ test: /.(re|ml)$/, use: 'bs-loader?module=amd' }
 ```
