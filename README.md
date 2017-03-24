@@ -84,7 +84,7 @@ module.exports = {
   module: {
     rules: [
       // Set up Reason and OCaml files to use the loader
-      { test: /.(re|ml)$/, use: 'bs-loader' },
+      { test: /\.(re|ml)$/, use: 'bs-loader' },
     ]
   },
   resolve: {
@@ -99,5 +99,5 @@ give the loader a `module` option. For example, to use AMD modules produced by B
 use the config
 
 ```js
-{ test: /.(re|ml)$/, use: 'bs-loader?module=amd' }
+{ test: /\.(re|ml)$/, use: 'bs-loader?module=amd' }
 ```
