@@ -5,7 +5,7 @@
   ],
   "bs-dependencies": [
     "reason-js",
-    "rehydrate"
+    "reason-react"
   ],
   "reason": {
     "react-jsx": true

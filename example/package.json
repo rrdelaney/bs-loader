@@ -10,9 +10,9 @@
   "license": "ISC",
   "devDependencies": {
     "bs-loader": "^1.0.0",
-    "bs-platform": "^1.5.0",
+    "bs-platform": "^1.7.1",
     "reason-js": "0.0.16",
-    "rehydrate": "git+https://github.com/reasonml/rehydrate.git",
+    "reason-react": "^0.1.1",
     "webpack": "^2.2.1"
   },
   "dependencies": {
