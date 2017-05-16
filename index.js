@@ -19,9 +19,9 @@ const runBsb = callback => {
   execFile(bsb, ['-make-world'], callback)
 }
 
-const getCompiledFile = (path, callback) => {
+const getCompiledFile = (path, callback, emitWarning) => {
   runBsb((err, res) => {
-    if (err) return callback(err, res)
+    if (err) emitWarning(res)
 
     readFile(path, (err, res) => {
       if (err) {
@@ -49,5 +49,5 @@ module.exports = function () {
     } else {
       callback(null, res)
     }
-  })
+  }, this.emitWarning)
 }
