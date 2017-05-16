@@ -19,9 +19,9 @@ const runBsb = callback => {
   execFile(bsb, ['-make-world'], callback)
 }
 
-const getCompiledFile = (path, callback, emitWarning) => {
+const getCompiledFile = (path, callback) => {
   runBsb((err, res) => {
-    if (err) emitWarning(res)
+    if (err) return callback(err, res)
 
     readFile(path, (err, res) => {
       if (err) {
@@ -36,6 +36,7 @@ const getCompiledFile = (path, callback, emitWarning) => {
 
 module.exports = function () {
   const options = getOptions(this) || {}
+  const errorType = options.errorType || 'error'
   const moduleDir = options.module || 'js'
 
   this.addDependency(this.resourcePath + 'i')
@@ -43,11 +44,14 @@ module.exports = function () {
   const compiledFilePath = getJsFile(moduleDir, this.resourcePath)
 
   getCompiledFile(compiledFilePath, (err, res) => {
-    if (err) {
+    if (err && errorType === 'warning') {
+      this.emitWarning(res)
+      callback(null, '')
+    } else if (err) {
       this.emitError(res)
       callback(err, null)
     } else {
       callback(null, res)
     }
-  }, this.emitWarning)
+  })
 }

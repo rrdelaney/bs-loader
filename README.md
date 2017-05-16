@@ -94,10 +94,22 @@ module.exports = {
 }
 ```
 
+## Options
+
+### `module`
+
 To tell Webpack to load a module type that isn't JS (for example, `amd` or `goog`)
 give the loader a `module` option. For example, to use AMD modules produced by Bucklescript,
 use the config
 
 ```js
 { test: /\.(re|ml)$/, use: 'bs-loader?module=amd' }
+```
+
+### `errorType`
+
+For `bs-loader` to emit errors instead of warnings, use `errorType=warning`. Example:
+
+```js
+{ test: /\.(re|ml)$/, use: 'bs-loader?errorType=warning' }
 ```
