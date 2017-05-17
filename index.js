@@ -13,7 +13,7 @@ const getJsFile = (moduleDir, resourcePath) => {
 }
 
 const transformSrc = src =>
-  src.replace(/(require\("\.\/.*)(\.js)("\);)/g, '$1$3')
+  src.replace(/(require\("\.\.?\/.*)(\.js)("\);)/g, '$1$3')
 
 const runBsb = callback => {
   execFile(bsb, ['-make-world'], callback)
