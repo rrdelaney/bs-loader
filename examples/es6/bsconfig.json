@@ -1,0 +1,14 @@
+{
+  "name": "hello",
+  "sources": [
+    "src"
+  ],
+  "bs-dependencies": [
+    "reason-js",
+    "reason-react"
+  ],
+  "reason": {
+    "react-jsx": true
+  },
+  "package-specs": ["es6"]
+}

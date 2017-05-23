@@ -1,0 +1,23 @@
+{
+  "name": "reason-webpack",
+  "private": true,
+  "version": "1.1.0",
+  "description": "",
+  "scripts": {
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bs-loader": "^1.2.1",
+    "bs-platform": "^1.7.1",
+    "reason-js": "0.0.16",
+    "reason-react": "^0.1.1",
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
