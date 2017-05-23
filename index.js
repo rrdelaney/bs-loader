@@ -12,14 +12,16 @@ const getJsFile = (moduleDir, resourcePath) => {
   return path.join(process.cwd(), outputDir, moduleDir, jsFileName)
 }
 
-const transformSrc = src =>
+const transformSrc = (moduleDir, src) =>
+  moduleDir === 'es6' ?
+  src.replace(/(from\ "\.\.?\/.*)(\.js)("\;)/g, '$1$3') :
   src.replace(/(require\("\.\.?\/.*)(\.js)("\);)/g, '$1$3')
 
 const runBsb = callback => {
   execFile(bsb, ['-make-world'], callback)
 }
 
-const getCompiledFile = (path, callback, emitWarning) => {
+const getCompiledFile = (moduleDir, path, callback, emitWarning) => {
   runBsb((err, res) => {
     if (err) {
       if (emitWarning) emitWarning(res)
@@ -30,7 +32,7 @@ const getCompiledFile = (path, callback, emitWarning) => {
       if (err) {
         callback(err, err)
       } else {
-        const src = transformSrc(res.toString())
+        const src = transformSrc(moduleDir, res.toString())
         callback(null, src)
       }
     })
@@ -46,7 +48,7 @@ module.exports = function () {
   const callback = this.async()
   const compiledFilePath = getJsFile(moduleDir, this.resourcePath)
 
-  getCompiledFile(compiledFilePath, (err, res) => {
+  getCompiledFile(moduleDir, compiledFilePath, (err, res) => {
     if (err) {
       this.emitError(res)
       callback(err, null)
