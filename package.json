@@ -15,7 +15,10 @@
   },
   "keywords": [
     "webpack",
-    "get-typed"
+    "get-typed",
+    "reason",
+    "reasonml",
+    "bucklescript"
   ],
   "author": "Ryan Delaney <rrdelaney@outlook.com>",
   "license": "MIT",
