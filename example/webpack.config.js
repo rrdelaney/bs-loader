@@ -20,11 +20,23 @@ module.exports = {
             presets: ['react-app']
           }
         }
+      },
+      {
+        test: /\.(re|ml)$/,
+        use: [
+          {
+            loader: 'bs-loader',
+            options: {
+              module: 'es6'
+            }
+          }
+        ]
       }
     ]
   },
   plugins: [
     new GetTypedPlugin({
+      sources: 'src',
       output: 'types'
     })
   ]

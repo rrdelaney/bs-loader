@@ -1,0 +1,16 @@
+# ninja log v5
+1	57	0	types/index.mlast	8da6f1ba6157ad30
+1	58	0	types/math.mlast	7f21664436748d82
+1	62	0	src/print_math.mlast	a4eef30f9e464025
+57	71	0	types/index.mlast.d	5511db5f6389f4be
+58	71	0	types/math.mlast.d	6cbf7d45be8087bb
+62	77	0	src/print_math.mlast.d	3e8e1ffb691d036
+1	23	0	types/math.cmj	6cd235174c9e208e
+1	23	0	/Users/ryan/Documents/dev/get-typed-webpack-plugin/example/lib/es6/types/math.js	6cd235174c9e208e
+1	23	0	types/math.cmi	6cd235174c9e208e
+1	25	0	types/index.cmj	7eaf389a8bcc6f54
+1	25	0	/Users/ryan/Documents/dev/get-typed-webpack-plugin/example/lib/es6/types/index.js	7eaf389a8bcc6f54
+1	25	0	types/index.cmi	7eaf389a8bcc6f54
+23	46	0	src/print_math.cmj	96f6343f24efddd
+23	46	0	/Users/ryan/Documents/dev/get-typed-webpack-plugin/example/lib/es6/src/print_math.js	96f6343f24efddd
+23	46	0	src/print_math.cmi	96f6343f24efddd

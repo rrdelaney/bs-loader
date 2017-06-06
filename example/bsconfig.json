@@ -1,0 +1,13 @@
+{
+  "name": "example",
+  "sources": [
+    "types",
+    "src"
+  ],
+  "bs-dependencies": [
+  ],
+  "reason": {
+    "react-jsx": true
+  },
+  "package-specs": ["es6"]
+}

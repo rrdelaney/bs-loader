@@ -1,2 +1,2 @@
-# get-typed-webpack-plugin
-Webpack plugin to generate types after compilation
+# get-typed-reason-webpack-plugin
+Webpack plugin to generate Reason types after compilation
