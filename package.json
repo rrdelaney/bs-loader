@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "peerDependencies": {
+    "get-typed": "*"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/rrdelaney/get-typed-webpack-plugin"
@@ -19,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/rrdelaney/get-typed-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/rrdelaney/get-typed-webpack-plugin"
+  "homepage": "https://github.com/rrdelaney/get-typed-webpack-plugin",
+  "devDependencies": {
+    "get-typed": "^1.0.0-beta.1"
+  }
 }
