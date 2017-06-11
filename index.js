@@ -21,12 +21,9 @@ const runBsb = callback => {
   execFile(bsb, ['-make-world'], callback)
 }
 
-const getCompiledFile = (moduleDir, path, callback, emitWarning) => {
+const getCompiledFile = (moduleDir, path, callback) => {
   runBsb((err, res) => {
-    if (err) {
-      if (emitWarning) emitWarning(res)
-      else return callback(err, res)
-    }
+    if (err) return callback(err, res)
 
     readFile(path, (err, res) => {
       if (err) {
@@ -44,16 +41,24 @@ module.exports = function () {
   const errorType = options.errorType || 'error'
   const moduleDir = options.module || 'js'
 
-  this.addDependency(this.resourcePath + 'i')
+  this.addContextDependency(this.context)
   const callback = this.async()
   const compiledFilePath = getJsFile(moduleDir, this.resourcePath)
 
   getCompiledFile(moduleDir, compiledFilePath, (err, res) => {
     if (err) {
-      this.emitError(res)
-      callback(err, null)
+      const errorMessages = res.match(/File [\s\S]*?:\nError: [\s\S]*?\n/g)
+
+      if (!errorMessages) {
+        this.emitError(res)
+        return callback(res, null)
+      }
+
+      errorMessages.slice(0, -1).forEach(msg => this.emitError(new Error(msg)))
+
+      callback(new Error(errorMessages[0]), null)
     } else {
       callback(null, res)
     }
-  }, errorType === 'warning' ? this.emitWarning : null)
+  })
 }
