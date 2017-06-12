@@ -33,7 +33,7 @@ First create a `bsconfig.json` for Bucklescript:
 }
 ```
 
-We will also need `reason-js`, `rehydrate`, and `bs-platform`. Your `package.json` should look something like this:
+We will also need `reason-js`, `reason-react`, and `bs-platform`. Your `package.json` should look something like this:
 
 ```json
 /* package.json */
