@@ -24,7 +24,7 @@ const transformSrc = (moduleDir, src) =>
   src.replace(/(require\("\.\.?\/.*)(\.js)("\);)/g, '$1$3')
 
 const runBsb = callback => {
-  execFile(bsb, ['-make-world'], callback)
+  execFile(bsb, ['-make-world'], { maxBuffer: Infinity }, callback)
 }
 
 const getCompiledFile = (moduleDir, path, callback) => {
