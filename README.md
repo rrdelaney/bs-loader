@@ -105,11 +105,3 @@ use the config
 ```js
 { test: /\.(re|ml)$/, use: 'bs-loader?module=amd' }
 ```
-
-### `errorType`
-
-For `bs-loader` to emit errors instead of warnings, use `errorType=warning`. Example:
-
-```js
-{ test: /\.(re|ml)$/, use: 'bs-loader?errorType=warning' }
-```
