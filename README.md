@@ -2,7 +2,7 @@
 
 > Bucklescript loader for Webpack
 
-This works with both Reason and OCaml files, thanks to Bucklescript 1.5.
+This works with both Reason and OCaml files
 
 ## Installation
 
@@ -14,7 +14,13 @@ npm install bs-loader
 
 ## Setting up Bucklescript
 
-First create a `bsconfig.json` for Bucklescript:
+First install `bs-platform` into the project:
+
+```
+$ npm i -D bs-platform
+```
+
+Create a `bsconfig.json` for Bucklescript:
 
 ```json
 /* bsconfig.json */
@@ -51,7 +57,7 @@ We will also need `reason-js`, `reason-react`, and `bs-platform`. Your `package.
     "bs-loader": "^1.0.0",
     "bs-platform": "^1.5.0",
     "reason-js": "0.0.16",
-    "rehydrate": "git+https://github.com/reasonml/rehydrate.git",
+    "reason-react": "0.1.3",
     "webpack": "^2.2.1"
   },
   "dependencies": {
