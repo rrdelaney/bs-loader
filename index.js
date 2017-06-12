@@ -2,7 +2,13 @@ const path = require('path')
 const { readFile } = require('fs')
 const { execFile } = require('child_process')
 const { getOptions } = require('loader-utils')
-const bsb = require.resolve('bs-platform/bin/bsb')
+
+let bsb
+try {
+  bsb = require.resolve('bs-platform/bin/bsb')
+} catch (e) {
+  throw new Error('"bs-platform" must be installed locally or globally.\nTry running "npm i -g bs-platform"')
+}
 
 const outputDir = 'lib'
 
