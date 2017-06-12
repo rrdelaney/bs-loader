@@ -1,6 +1,6 @@
 const path = require('path')
-const { readFile } = require('fs')
-const { execFile } = require('child_process')
+const { readFile, readFileSync } = require('fs')
+const { execFile, execFileSync } = require('child_process')
 const { getOptions } = require('loader-utils')
 
 let bsb
@@ -23,8 +23,13 @@ const transformSrc = (moduleDir, src) =>
   src.replace(/(from\ "\.\.?\/.*)(\.js)("\;)/g, '$1$3') :
   src.replace(/(require\("\.\.?\/.*)(\.js)("\);)/g, '$1$3')
 
+
 const runBsb = callback => {
   execFile(bsb, ['-make-world'], { maxBuffer: Infinity }, callback)
+}
+
+const runBsbSync = () => {
+  execFileSync(bsb, ['-make-world'], { maxBuffer: Infinity })
 }
 
 const getCompiledFile = (moduleDir, path, callback) => {
@@ -42,7 +47,13 @@ const getCompiledFile = (moduleDir, path, callback) => {
   })
 }
 
-module.exports = function () {
+const getCompiledFileSync = (moduleDir, path) => {
+  runBsbSync()
+  const res = readFile(path)
+  return transformSrc(moduleDir, res.toString())
+}
+
+module.exports = function loader () {
   const options = getOptions(this) || {}
   const errorType = options.errorType || 'error'
   const moduleDir = options.module || 'js'
@@ -67,4 +78,10 @@ module.exports = function () {
       callback(null, res)
     }
   })
+}
+
+module.exports.process = (src, filename) => {
+  const moduleDir = process.env.BS_MODULE || 'js'
+  const compiledFilePath = getJsFile(moduleDir, this.resourcePath)
+  return getCompiledFileSync(moduleDir, compiledFilePath)
 }
