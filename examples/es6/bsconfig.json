@@ -5,8 +5,7 @@
   ],
   "bs-dependencies": [
     "reason-js",
-    "reason-react",
-    "bs-jest"
+    "reason-react"
   ],
   "reason": {
     "react-jsx": true

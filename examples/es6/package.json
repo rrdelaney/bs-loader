@@ -4,13 +4,11 @@
   "version": "1.1.0",
   "description": "",
   "scripts": {
-    "build": "webpack",
-    "test": "BS_MODULE=es6 jest"
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "bs-jest": "^0.1.0",
     "bs-loader": "^1.2.1",
     "bs-platform": "^1.7.1",
     "jest": "^20.0.4",
@@ -22,18 +20,5 @@
   "dependencies": {
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "re",
-      "js",
-      "ml"
-    ],
-    "testMatch": [
-      "**/src/*_test.re"
-    ],
-    "transform": {
-      ".(re|ml)": "bs-loader"
-    }
   }
 }

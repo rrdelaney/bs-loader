@@ -29,7 +29,7 @@ const runBsb = callback => {
 }
 
 const runBsbSync = () => {
-  execFileSync(bsb, ['-make-world'], { maxBuffer: Infinity })
+  execFileSync(bsb, ['-make-world'])
 }
 
 const getCompiledFile = (moduleDir, path, callback) => {
@@ -49,7 +49,7 @@ const getCompiledFile = (moduleDir, path, callback) => {
 
 const getCompiledFileSync = (moduleDir, path) => {
   runBsbSync()
-  const res = readFile(path)
+  const res = readFileSync(path)
   return transformSrc(moduleDir, res.toString())
 }
 
@@ -81,7 +81,7 @@ module.exports = function loader () {
 }
 
 module.exports.process = (src, filename) => {
-  const moduleDir = process.env.BS_MODULE || 'js'
-  const compiledFilePath = getJsFile(moduleDir, this.resourcePath)
+  const moduleDir = 'js'
+  const compiledFilePath = getJsFile(moduleDir, filename)
   return getCompiledFileSync(moduleDir, compiledFilePath)
 }
