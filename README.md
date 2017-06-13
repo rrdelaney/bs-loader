@@ -30,8 +30,7 @@ Create a `bsconfig.json` for Bucklescript:
     "src"
   ],
   "bs-dependencies": [
-    "reason-js",
-    "rehydrate"
+    "reason-react"
   ],
   "reason": {
     "react-jsx": true
@@ -39,7 +38,7 @@ Create a `bsconfig.json` for Bucklescript:
 }
 ```
 
-We will also need `reason-js`, `reason-react`, and `bs-platform`. Your `package.json` should look something like this:
+We will also need `reason-react`, and `bs-platform`. Your `package.json` should look something like this:
 
 ```json
 /* package.json */
@@ -56,7 +55,6 @@ We will also need `reason-js`, `reason-react`, and `bs-platform`. Your `package.
   "devDependencies": {
     "bs-loader": "^1.0.0",
     "bs-platform": "^1.5.0",
-    "reason-js": "0.0.16",
     "reason-react": "0.1.3",
     "webpack": "^2.2.1"
   },
