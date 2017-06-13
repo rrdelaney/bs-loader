@@ -29,12 +29,14 @@ const runBsb = callback => {
 }
 
 const runBsbSync = () => {
-  execFileSync(bsb, ['-make-world'])
+  execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
 }
+
+const getBsbErrorMessages = err => err.match(/File [\s\S]*?:\nError: [\s\S]*?\n/g)
 
 const getCompiledFile = (moduleDir, path, callback) => {
   runBsb((err, res) => {
-    if (err) return callback(err, res)
+    if (err) return callback(res, null)
 
     readFile(path, (err, res) => {
       if (err) {
@@ -48,14 +50,18 @@ const getCompiledFile = (moduleDir, path, callback) => {
 }
 
 const getCompiledFileSync = (moduleDir, path) => {
-  runBsbSync()
+  try {
+    runBsbSync()
+  } catch (e) {
+    throw e.output.toString()
+  }
+
   const res = readFileSync(path)
   return transformSrc(moduleDir, res.toString())
 }
 
 module.exports = function loader () {
   const options = getOptions(this) || {}
-  const errorType = options.errorType || 'error'
   const moduleDir = options.module || 'js'
 
   this.addContextDependency(this.context)
@@ -64,11 +70,11 @@ module.exports = function loader () {
 
   getCompiledFile(moduleDir, compiledFilePath, (err, res) => {
     if (err) {
-      const errorMessages = res.match(/File [\s\S]*?:\nError: [\s\S]*?\n/g)
+      const errorMessages = getBsbErrorMessages(err)
 
       if (!errorMessages) {
-        this.emitError(res)
-        return callback(res, null)
+        this.emitError(err)
+        return callback(err, null)
       }
 
       errorMessages.slice(0, -1).forEach(msg => this.emitError(new Error(msg)))
@@ -83,5 +89,16 @@ module.exports = function loader () {
 module.exports.process = (src, filename) => {
   const moduleDir = 'js'
   const compiledFilePath = getJsFile(moduleDir, filename)
-  return getCompiledFileSync(moduleDir, compiledFilePath)
+
+  try {
+    return getCompiledFileSync(moduleDir, compiledFilePath)
+  } catch (err) {
+    const bsbErrorMessages = getBsbErrorMessages(err)
+
+    if (bsbErrorMessages && bsbErrorMessages.length > 0) {
+      throw new Error(bsbErrorMessages[0])
+    } else {
+      throw err
+    }
+  }
 }
