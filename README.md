@@ -33,7 +33,7 @@ Create a `bsconfig.json` for Bucklescript:
     "reason-react"
   ],
   "reason": {
-    "react-jsx": true
+    "react-jsx": 2
   }
 }
 ```
