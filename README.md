@@ -100,6 +100,27 @@ module.exports = {
 }
 ```
 
+## Usage with Jest
+
+`bs-loader` includes a transform for usage with Jest. This lets Jest run
+Reason and OCaml files as tests. An example Jest configuration using `bs-loader`:
+
+```
+"jest": {
+  "moduleFileExtensions": [
+    "re",
+    "js",
+    "ml"
+  ],
+  "testMatch": [
+    "**/src/*_test.re"
+  ],
+  "transform": {
+    ".(re|ml)": "bs-loader"
+  }
+}
+```
+
 ## Options
 
 ### `module`
