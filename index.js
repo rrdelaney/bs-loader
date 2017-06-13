@@ -73,6 +73,7 @@ module.exports = function loader () {
       const errorMessages = getBsbErrorMessages(err)
 
       if (!errorMessages) {
+        if (!(err instanceof Error)) err = new Error(err)
         this.emitError(err)
         return callback(err, null)
       }
