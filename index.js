@@ -35,7 +35,7 @@ const runBsbSync = () => {
 const getBsbErrorMessages = err => err.match(/File [\s\S]*?:\nError: [\s\S]*?\n/g)
 
 const getCompiledFile = (moduleDir, path, callback) => {
-  runBsb((err, res) => {
+  runBsb((err, _, res) => {
     if (err) return callback(res, null)
 
     readFile(path, (err, res) => {
