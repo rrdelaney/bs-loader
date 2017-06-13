@@ -7,7 +7,7 @@
     "reason-react"
   ],
   "reason": {
-    "react-jsx": true
+    "react-jsx": 2
   },
   "package-specs": ["es6"]
 }
