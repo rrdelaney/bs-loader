@@ -9,15 +9,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "bs-loader": "^1.2.1",
+    "bs-loader": "^1.5.2",
     "bs-platform": "^1.7.5",
     "jest": "^20.0.4",
     "reason-react": "^0.1.4",
-    "webpack": "^2.4.1",
-    "webpack-dev-server": "^2.4.5"
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.0"
   },
   "dependencies": {
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   }
 }
