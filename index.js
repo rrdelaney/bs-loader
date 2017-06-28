@@ -7,7 +7,7 @@ let bsb
 try {
   bsb = require.resolve('bs-platform/bin/bsb')
 } catch (e) {
-  throw new Error('"bs-platform" must be installed locally.\nTry running "npm i -D bs-platform"')
+  bsb = 'bsb'
 }
 
 const outputDir = 'lib'
