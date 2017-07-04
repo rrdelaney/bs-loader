@@ -19,10 +19,9 @@ const getJsFile = (moduleDir, resourcePath) => {
 }
 
 const transformSrc = (moduleDir, src) =>
-  moduleDir === 'es6' ?
-  src.replace(/(from\ "\.\.?\/.*)(\.js)("\;)/g, '$1$3') :
-  src.replace(/(require\("\.\.?\/.*)(\.js)("\);)/g, '$1$3')
-
+  moduleDir === 'es6'
+    ? src.replace(/(from\ "\.\.?\/.*)(\.js)("\;)/g, '$1$3')
+    : src.replace(/(require\("\.\.?\/.*)(\.js)("\);)/g, '$1$3')
 
 const runBsb = callback => {
   execFile(bsb, ['-make-world'], { maxBuffer: Infinity }, callback)
@@ -32,7 +31,8 @@ const runBsbSync = () => {
   execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
 }
 
-const getBsbErrorMessages = err => err.match(/File [\s\S]*?:\nError: [\s\S]*?\n/g)
+const getBsbErrorMessages = err =>
+  err.match(/File [\s\S]*?:\nError: [\s\S]*?(?=ninja|\n\n)/g)
 
 const getCompiledFile = (moduleDir, path, callback) => {
   runBsb((err, stdout, stderr) => {
@@ -60,7 +60,7 @@ const getCompiledFileSync = (moduleDir, path) => {
   return transformSrc(moduleDir, res.toString())
 }
 
-module.exports = function loader () {
+module.exports = function loader() {
   const options = getOptions(this) || {}
   const moduleDir = options.module || 'js'
 
@@ -80,7 +80,7 @@ module.exports = function loader () {
 
       errorMessages.slice(0, -1).forEach(msg => this.emitError(new Error(msg)))
 
-      callback(new Error(errorMessages[0]), null)
+      callback(new Error(errorMessages.slice(-1)), null)
     } else {
       callback(null, res)
     }
