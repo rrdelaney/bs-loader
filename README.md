@@ -12,7 +12,7 @@
 
 ```js
 plugins: [
-  new GetTypedPlugin({ sources: 'src', output: 'types' })
+  new ReasonablyTypedPlugin({ sources: 'src', output: 'types' })
 ]
 ```
 
