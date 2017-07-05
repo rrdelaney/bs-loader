@@ -23,7 +23,10 @@ const transformSrc = (moduleDir, src) =>
     ? src.replace(/(from\ "\.\.?\/.*)(\.js)("\;)/g, '$1$3')
     : src.replace(/(require\("\.\.?\/.*)(\.js)("\);)/g, '$1$3')
 
-const runBsb = callback => {
+const runBsb = (compilation, callback) => {
+  if (compilation.__HAS_RUN_BSB__) return callback()
+  compilation.__HAS_RUN_BSB__ = true
+
   execFile(bsb, ['-make-world'], { maxBuffer: Infinity }, callback)
 }
 
@@ -31,15 +34,13 @@ const runBsbSync = () => {
   execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
 }
 
-const getBsbErrorMessages = err => {
-  const normalErr = /File [\s\S]*?:\nError: [\s\S]*?(?=ninja|\n\n)/g
-  const fatalErr = () => /Fatal error:/g
-  return err.match(normalErr) || err.match(fatalErr())
-}
+const getBsbErrorMessages = err =>
+  err.match(/(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g)
 
-const getCompiledFile = (moduleDir, path, callback) => {
-  runBsb((err, stdout, stderr) => {
-    if (err) return callback((stdout || "") + (stderr || ""), null)
+const getCompiledFile = (compilation, moduleDir, path, callback) => {
+  runBsb(compilation, (err, stdout, stderr) => {
+    const errorOutput = `${stdout}\n${stderr}`
+    if (err) return callback(errorOutput, null)
 
     readFile(path, (err, res) => {
       if (err) {
@@ -71,23 +72,30 @@ module.exports = function loader() {
   const callback = this.async()
   const compiledFilePath = getJsFile(moduleDir, this.resourcePath)
 
-  getCompiledFile(moduleDir, compiledFilePath, (err, res) => {
-    if (err) {
-      const errorMessages = getBsbErrorMessages(err)
+  getCompiledFile(
+    this._compilation,
+    moduleDir,
+    compiledFilePath,
+    (err, res) => {
+      if (err) {
+        const errorMessages = getBsbErrorMessages(err)
 
-      if (!errorMessages) {
-        if (!(err instanceof Error)) err = new Error(err)
-        this.emitError(err)
-        return callback(err, null)
+        if (!errorMessages) {
+          if (!(err instanceof Error)) err = new Error(err)
+          this.emitError(err)
+          return callback(err, null)
+        }
+
+        errorMessages
+          .slice(0, -1)
+          .forEach(msg => this.emitError(new Error(msg)))
+
+        callback(new Error(errorMessages.slice(-1)), null)
+      } else {
+        callback(null, res)
       }
-
-      errorMessages.slice(0, -1).forEach(msg => this.emitError(new Error(msg)))
-
-      callback(new Error(errorMessages.slice(-1)), null)
-    } else {
-      callback(null, res)
     }
-  })
+  )
 }
 
 module.exports.process = (src, filename) => {

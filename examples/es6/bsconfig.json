@@ -1,11 +1,7 @@
 {
   "name": "hello",
-  "sources": [
-    "src"
-  ],
-  "bs-dependencies": [
-    "reason-react"
-  ],
+  "sources": ["src"],
+  "bs-dependencies": ["reason-react"],
   "reason": {
     "react-jsx": 2
   },

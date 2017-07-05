@@ -10,13 +10,16 @@ module.exports = {
     rules: [
       {
         test: /\.(re|ml)$/,
-        use: [{
-          loader: 'bs-loader',
-          options: {
-            module: 'es6',
-          },
-        }],
-    }]
+        use: [
+          {
+            loader: './bs-loader',
+            options: {
+              module: 'es6'
+            }
+          }
+        ]
+      }
+    ]
   },
 
   resolve: {
