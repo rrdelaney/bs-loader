@@ -31,12 +31,15 @@ const runBsbSync = () => {
   execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
 }
 
-const getBsbErrorMessages = err =>
-  err.match(/File [\s\S]*?:\nError: [\s\S]*?(?=ninja|\n\n)/g)
+const getBsbErrorMessages = err => {
+  const normalErr = /File [\s\S]*?:\nError: [\s\S]*?(?=ninja|\n\n)/g
+  const fatalErr = () => /Fatal error:/g
+  return err.match(normalErr) || err.match(fatalErr())
+}
 
 const getCompiledFile = (moduleDir, path, callback) => {
   runBsb((err, stdout, stderr) => {
-    if (err) return callback(stdout, null)
+    if (err) return callback((stdout || "") + (stderr || ""), null)
 
     readFile(path, (err, res) => {
       if (err) {
