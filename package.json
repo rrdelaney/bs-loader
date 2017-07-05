@@ -1,6 +1,6 @@
 {
   "name": "bs-loader",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "description": "Bucklescript integration in Webpack",
   "main": "index.js",
   "scripts": {
