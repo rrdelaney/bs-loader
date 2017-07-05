@@ -12,7 +12,7 @@ module.exports = {
         test: /\.(re|ml)$/,
         use: [
           {
-            loader: './bs-loader',
+            loader: 'bs-loader',
             options: {
               module: 'es6'
             }
