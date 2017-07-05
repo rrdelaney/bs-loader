@@ -84,6 +84,7 @@ module.exports = function loader() {
     compiledFilePath,
     (err, res) => {
       if (err) {
+        if (err instanceof Error) err = err.toString()
         const errorMessages = getBsbErrorMessages(err)
 
         if (!errorMessages) {
