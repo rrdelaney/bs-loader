@@ -11,17 +11,23 @@ try {
 }
 
 const outputDir = 'lib'
+const CWD = process.cwd()
+
+const fileNameRegex = /\.(ml|re)$/
+const es6ReplaceRegex = /(from\ "\.\.?\/.*)(\.js)("\;)/g
+const commonJsReplaceRegex = /(require\("\.\.?\/.*)(\.js)("\);)/g
+const getErrorRegex = /(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g
 
 const getJsFile = (moduleDir, resourcePath) => {
-  const mlFileName = resourcePath.replace(process.cwd(), '')
-  const jsFileName = mlFileName.replace(/\.(ml|re)$/, '.js')
-  return path.join(process.cwd(), outputDir, moduleDir, jsFileName)
+  const mlFileName = resourcePath.replace(CWD, '')
+  const jsFileName = mlFileName.replace(fileNameRegex, '.js')
+  return path.join(CWD, outputDir, moduleDir, jsFileName)
 }
 
 const transformSrc = (moduleDir, src) =>
   moduleDir === 'es6'
-    ? src.replace(/(from\ "\.\.?\/.*)(\.js)("\;)/g, '$1$3')
-    : src.replace(/(require\("\.\.?\/.*)(\.js)("\);)/g, '$1$3')
+    ? src.replace(es6ReplaceRegex, '$1$3')
+    : src.replace(commonJsReplaceRegex, '$1$3')
 
 const runBsb = (compilation, callback) => {
   if (compilation.__HAS_RUN_BSB__) return callback()
@@ -34,8 +40,7 @@ const runBsbSync = () => {
   execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
 }
 
-const getBsbErrorMessages = err =>
-  err.match(/(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g)
+const getBsbErrorMessages = err => err.match(getErrorRegex)
 
 const getCompiledFile = (compilation, moduleDir, path, callback) => {
   runBsb(compilation, (err, stdout, stderr) => {
@@ -86,11 +91,11 @@ module.exports = function loader() {
           return callback(err, null)
         }
 
-        errorMessages
-          .slice(0, -1)
-          .forEach(msg => this.emitError(new Error(msg)))
+        for (let i = 0; i < errorMessages.length - 1; ++i) {
+          this.emitError(new Error(errorMessages[i]))
+        }
 
-        callback(new Error(errorMessages.slice(-1)), null)
+        callback(new Error(errorMessages[errorMessages.length - 1]), null)
       } else {
         callback(null, res)
       }
