@@ -5,7 +5,7 @@ const { getOptions } = require('loader-utils')
 
 let bsb
 try {
-  bsb = require.resolve('bs-platform/bin/bsb')
+  bsb = require.resolve('bs-platform/bin/bsb.exe')
 } catch (e) {
   bsb = 'bsb'
 }
