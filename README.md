@@ -39,7 +39,7 @@ Create a `bsconfig.json` for Bucklescript:
 ```
 
 We will also need `reason-react`, and `bs-platform`. You can install `bs-platform` globally and
-optionally use `npm link` to the link the binary, or install `bs-platform` as a devDependency.
+use `npm link` to the link the binary, or install `bs-platform` as a devDependency.
 Your `package.json` should look something like this:
 
 ```json
