@@ -37,8 +37,7 @@ const runBsb = (compilation, callback) => {
 }
 
 const runBsbSync = () => {
-  const cp = execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
-  cp.stdin.end()
+  execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
 }
 
 const getBsbErrorMessages = err => err.match(getErrorRegex)
@@ -112,6 +111,7 @@ module.exports.process = (src, filename) => {
   try {
     return getCompiledFileSync(moduleDir, compiledFilePath)
   } catch (err) {
+    if (err instanceof Error) err = err.toString()
     const bsbErrorMessages = getBsbErrorMessages(err)
 
     if (bsbErrorMessages && bsbErrorMessages.length > 0) {
