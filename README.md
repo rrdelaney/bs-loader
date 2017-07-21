@@ -10,7 +10,7 @@ This works with both Reason and OCaml files
 npm install bs-loader
 ```
 
-## [Example](https://github.com/rrdelaney/bs-loader/blob/master/example)
+## [Example](https://github.com/reasonml-community/bs-loader/blob/master/examples)
 
 ## Setting up Bucklescript
 
