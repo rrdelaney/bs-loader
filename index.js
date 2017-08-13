@@ -13,9 +13,11 @@ try {
 const outputDir = 'lib'
 const CWD = process.cwd()
 
+const isCaseInsensitive = process.platform === 'linux'
+
 const fileNameRegex = /\.(ml|re)$/
-const es6ReplaceRegex = /(from\ "\.\.?\/.*)(\.js)("\;)/g
-const commonJsReplaceRegex = /(require\("\.\.?\/.*)(\.js)("\);)/g
+const es6ReplaceRegex = /(from\ ")(\.\.?\/.*\.js)("\;)/g
+const commonJsReplaceRegex = /(require\(")(\.\.?\/.*\.js)("\);)/g
 const getErrorRegex = /(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g
 
 const getJsFile = (moduleDir, resourcePath) => {
@@ -24,10 +26,27 @@ const getJsFile = (moduleDir, resourcePath) => {
   return path.join(CWD, outputDir, moduleDir, jsFileName)
 }
 
+const replaceModuleName = (
+  match,
+  importStatement,
+  moduleName,
+  endStatement
+) => {
+  const dir = path.dirname(moduleName)
+  const file = path.basename(moduleName, '.js')
+  const processedName =
+    dir +
+    path.sep +
+    (isCaseInsensitive ? file.chatAt(0).toLowerCase() + file.slice(1) : file)
+
+  console.log(`${moduleName} -> ${processedName}`)
+  return importStatement + processedName + endStatement
+}
+
 const transformSrc = (moduleDir, src) =>
   moduleDir === 'es6'
-    ? src.replace(es6ReplaceRegex, '$1$3')
-    : src.replace(commonJsReplaceRegex, '$1$3')
+    ? src.replace(es6ReplaceRegex, replaceModuleName)
+    : src.replace(commonJsReplaceRegex, replaceModuleName)
 
 const runBsb = (compilation, callback) => {
   if (compilation.__HAS_RUN_BSB__) return callback()
