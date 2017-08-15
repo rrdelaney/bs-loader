@@ -10,13 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/rrdelaney/bs-loader.git"
   },
-  "keywords": [
-    "bucklescript",
-    "reason",
-    "webpack",
-    "ocaml",
-    "reasonml"
-  ],
+  "keywords": ["bucklescript", "reason", "webpack", "ocaml", "reasonml"],
   "author": "Ryan Delaney <rrdelaney@outlook.com>",
   "license": "MIT",
   "bugs": {
@@ -27,8 +21,7 @@
     "loader-utils": "^1.1.0"
   },
   "devDependencies": {
-    "bs-platform": "^1.8.2",
-    "jest-cli": "^20.0.4",
+    "jest": "^20.0.4",
     "webpack": "^3.5.4"
   }
 }
