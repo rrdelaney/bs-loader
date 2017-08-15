@@ -1,0 +1,5 @@
+{
+  "name": "test",
+  "sources": ["fixtures"],
+  "package-specs": ["es6"]
+}
