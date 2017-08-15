@@ -39,7 +39,6 @@ const replaceModuleName = (
     path.sep +
     (isCaseInsensitive ? file.charAt(0).toLowerCase() + file.slice(1) : file)
 
-  console.log(`${moduleName} -> ${processedName}`)
   return importStatement + processedName + endStatement
 }
 
