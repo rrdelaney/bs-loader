@@ -4,7 +4,7 @@
   "description": "Bucklescript integration in Webpack",
   "main": "index.js",
   "scripts": {
-    "test": "cd test && jest"
+    "test": "cd test/simple && jest && cd ../insource && jest"
   },
   "repository": {
     "type": "git",
