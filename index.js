@@ -18,9 +18,12 @@ const es6ReplaceRegex = /(from\ "\.\.?\/.*)(\.js)("\;)/g
 const commonJsReplaceRegex = /(require\("\.\.?\/.*)(\.js)("\);)/g
 const getErrorRegex = /(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g
 
-const getJsFile = (moduleDir, resourcePath) => {
+const getJsFile = (moduleDir, resourcePath, inSource) => {
   const mlFileName = resourcePath.replace(CWD, '')
   const jsFileName = mlFileName.replace(fileNameRegex, '.js')
+  if (inSource) {
+    return path.join(CWD, jsFileName)
+  }
   return path.join(CWD, outputDir, moduleDir, jsFileName)
 }
 
@@ -72,10 +75,15 @@ const getCompiledFileSync = (moduleDir, path) => {
 module.exports = function loader() {
   const options = getOptions(this) || {}
   const moduleDir = options.module || 'js'
+  const inSourceBuild = options.inSource || false
 
   this.addContextDependency(this.context)
   const callback = this.async()
-  const compiledFilePath = getJsFile(moduleDir, this.resourcePath)
+  const compiledFilePath = getJsFile(
+    moduleDir,
+    this.resourcePath,
+    inSourceBuild
+  )
 
   getCompiledFile(
     this._compilation,
@@ -106,7 +114,7 @@ module.exports = function loader() {
 
 module.exports.process = (src, filename) => {
   const moduleDir = 'js'
-  const compiledFilePath = getJsFile(moduleDir, filename)
+  const compiledFilePath = getJsFile(moduleDir, filename, false)
 
   try {
     return getCompiledFileSync(moduleDir, compiledFilePath)
