@@ -72,31 +72,17 @@ const getCompiledFileSync = (moduleDir, path) => {
   return transformSrc(moduleDir, res.toString())
 }
 
-const isInSourceBuild = moduleOptions => {
-  const bsconfig = require(`${CWD}/bsconfig.json`)
-  const moduleBsSettings = bsconfig['package-specs'].find(moduleConfig => {
-    // If config is only a string, it will never be an in-source build
-    if (typeof moduleConfig === 'string') {
-      return false
-    }
-    if (typeof moduleConfig === 'object') {
-      return moduleConfig.module === moduleOptions
-    }
-    return false
-  })
-  return moduleBsSettings && moduleBsSettings['in-source']
-}
-
 module.exports = function loader() {
   const options = getOptions(this) || {}
   const moduleDir = options.module || 'js'
+  const inSourceBuild = options.inSource || false
 
   this.addContextDependency(this.context)
   const callback = this.async()
   const compiledFilePath = getJsFile(
     moduleDir,
     this.resourcePath,
-    isInSourceBuild(moduleDir)
+    inSourceBuild
   )
 
   getCompiledFile(
@@ -128,11 +114,7 @@ module.exports = function loader() {
 
 module.exports.process = (src, filename) => {
   const moduleDir = 'js'
-  const compiledFilePath = getJsFile(
-    moduleDir,
-    filename,
-    isInSourceBuild(moduleDir)
-  )
+  const compiledFilePath = getJsFile(moduleDir, filename, false)
 
   try {
     return getCompiledFileSync(moduleDir, compiledFilePath)
