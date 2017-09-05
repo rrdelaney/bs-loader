@@ -42,3 +42,16 @@ let sum = Math_ops.add 1. 4.2;
 
 let diff = Math_ops.sub 10. 3.1;
 ```
+
+<h3 align="center">
+  Use Reason code from JS
+</h3>
+
+```js
+// @flow
+
+import { add } from './my_reason_file'
+
+// The `add` function is typed!
+const value = add(100, 200)
+```
