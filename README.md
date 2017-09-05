@@ -1,7 +1,7 @@
-# get-typed-reason-webpack-plugin
+# reason-webpack-plugin
 
 <pre align="center">
-  yarn add --dev get-typed-reason-webpack-plugin
+  yarn add --dev reason-webpack-plugin
 </pre>
 
 > Webpack plugin to generate Reason types after compilation
@@ -12,7 +12,7 @@
 
 ```js
 plugins: [
-  new TypedPlugin({ sources: 'src', output: 'types' })
+  new ReasonPlugin({ sources: 'src', output: 'types' })
 ]
 ```
 
