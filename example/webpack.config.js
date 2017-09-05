@@ -1,5 +1,5 @@
 const path = require('path')
-const GetTypedPlugin = require('../')
+const ReasonPlugin = require('../')
 
 process.env.BABEL_ENV = 'development'
 
@@ -38,7 +38,7 @@ module.exports = {
     extensions: ['.js', '.json', '.re']
   },
   plugins: [
-    new GetTypedPlugin({
+    new ReasonPlugin({
       sources: 'src',
       output: 'types'
     })
