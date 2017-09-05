@@ -1,9 +1,9 @@
-//@flow
+// @flow
 
-import { print } from './print_math.re'
+import { print } from './print_math'
 
 export default function add(x: number, y: number): number {
   return x + y
 }
 
-print(10)
+print(200, 400)

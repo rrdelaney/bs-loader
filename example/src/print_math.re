@@ -1,1 +1,1 @@
-let print x => Js.log (Math.sub x x);
+let print x z => Js.log (Math.sub x z);

@@ -4,3 +4,4 @@ node_modules
 lib
 types
 build
+src/**/*.js.flow

@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "glob": "^7.1.2",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "reasonable-flowgen": "^0.1.5"
   }
 }

@@ -1,5 +1,5 @@
 [ignore]
-
+.*/node_modules/bs-platform/.*
 [include]
 src
 

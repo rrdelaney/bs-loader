@@ -34,6 +34,9 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    extensions: ['.js', '.json', '.re']
+  },
   plugins: [
     new GetTypedPlugin({
       sources: 'src',

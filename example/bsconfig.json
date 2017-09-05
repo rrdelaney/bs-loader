@@ -1,13 +1,10 @@
 {
   "name": "example",
-  "sources": [
-    "types",
-    "src"
-  ],
-  "bs-dependencies": [
-  ],
+  "sources": ["types", "src"],
+  "bs-dependencies": [],
   "reason": {
     "react-jsx": true
   },
-  "package-specs": ["es6"]
+  "package-specs": ["es6"],
+  "bsc-flags": ["-bs-super-errors", "-bs-gen-tds"]
 }
