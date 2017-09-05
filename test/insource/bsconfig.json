@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "insource-test",
   "sources": ["fixtures"],
   "package-specs": [
     {

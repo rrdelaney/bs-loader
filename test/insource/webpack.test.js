@@ -2,8 +2,8 @@ const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
 
-const output = path.join(__dirname, 'output/webpack')
-const loader = path.join(__dirname, '../')
+const output = path.join(__dirname, 'output', 'webpack')
+const loader = path.join(__dirname, '..', '..')
 
 const baseConfig = {
   entry: path.join(__dirname, 'fixtures/fib.ml'),
@@ -15,19 +15,19 @@ const baseConfig = {
           loader,
           options: {
             module: 'es6',
-            inSource: true,
-          },
-        },
-      },
-    ],
+            inSource: true
+          }
+        }
+      }
+    ]
   },
   resolve: {
-    extensions: ['.re', '.ml', '.js'],
+    extensions: ['.re', '.ml', '.js']
   },
   output: {
     path: output,
-    libraryTarget: 'commonjs2',
-  },
+    libraryTarget: 'commonjs2'
+  }
 }
 
 it('runs', done => {
