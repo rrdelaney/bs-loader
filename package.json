@@ -4,7 +4,7 @@
   "description": "Library for reading the bsconfig.json for BuckleScript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,9 @@
   "homepage": "https://github.com/rrdelaney/read-bsconfig#readme",
   "dependencies": {
     "json5": "^0.5.1"
+  },
+  "files": ["index.js"],
+  "devDependencies": {
+    "jest": "^21.0.1"
   }
 }
