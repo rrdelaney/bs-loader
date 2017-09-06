@@ -130,3 +130,38 @@ use the config
 ```js
 { test: /\.(re|ml)$/, use: 'bs-loader?module=amd' }
 ```
+
+### `inSource`
+
+To use bs-loader with [bsb's in-souce builds](https://bucklescript.github.io/bucklescript/Manual.html#_in_source_build_support_since_1_9_0),
+add the `inSource` option to your loader config:
+
+```js
+{
+  test: /\.(re|ml)$/,
+  use: {
+    loader: 'bs-loader',
+    options: {
+      module: 'es6',
+      inSource: true
+    }
+  }
+}
+```
+
+### `cwd`
+
+This option specifies what directory to run `bsb` from. For example, to
+run `bsb` from the same directory as your webpack config, use:
+
+```js
+{
+  test: /\.(re|ml)$/,
+  use: {
+    loader: 'bs-loader',
+    options: {
+     cwd: __dirname
+    }
+  }
+}
+```
