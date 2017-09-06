@@ -15,7 +15,8 @@ const baseConfig = {
           loader,
           options: {
             module: 'es6',
-            inSource: true
+            inSource: true,
+            cwd: __dirname
           }
         }
       }

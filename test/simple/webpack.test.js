@@ -14,7 +14,8 @@ const baseConfig = {
         use: {
           loader,
           options: {
-            module: 'es6'
+            module: 'es6',
+            cwd: __dirname
           }
         }
       }

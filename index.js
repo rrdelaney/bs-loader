@@ -32,21 +32,31 @@ const transformSrc = (moduleDir, src) =>
     ? src.replace(es6ReplaceRegex, '$1$3')
     : src.replace(commonJsReplaceRegex, '$1$3')
 
-const runBsb = (compilation, callback) => {
+const runBsb = (buildDir, compilation, callback) => {
   if (compilation.__HAS_RUN_BSB__) return callback()
   compilation.__HAS_RUN_BSB__ = true
 
-  execFile(bsb, ['-make-world'], { maxBuffer: Infinity }, callback)
+  execFile(
+    bsb,
+    ['-make-world'],
+    { maxBuffer: Infinity, cwd: buildDir },
+    callback
+  )
 }
 
 const runBsbSync = () => {
   execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
 }
 
-const getBsbErrorMessages = err => err.match(getErrorRegex)
+const getBsbErrorMessages = err => {
+  if (typeof err === 'string') return err.match(getErrorRegex)
+  if (err.message) return [err.message]
 
-const getCompiledFile = (compilation, moduleDir, path, callback) => {
-  runBsb(compilation, (err, stdout, stderr) => {
+  return undefined
+}
+
+const getCompiledFile = (buildDir, compilation, moduleDir, path, callback) => {
+  runBsb(buildDir, compilation, (err, stdout, stderr) => {
     const errorOutput = `${stdout}\n${stderr}`
     if (err) return callback(errorOutput, null)
 
@@ -74,6 +84,7 @@ const getCompiledFileSync = (moduleDir, path) => {
 
 module.exports = function loader() {
   const options = getOptions(this) || {}
+  const buildDir = options.cwd || CWD
   const moduleDir = options.module || 'js'
   const inSourceBuild = options.inSource || false
 
@@ -86,6 +97,7 @@ module.exports = function loader() {
   )
 
   getCompiledFile(
+    buildDir,
     this._compilation,
     moduleDir,
     compiledFilePath,
