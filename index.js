@@ -17,6 +17,7 @@ const fileNameRegex = /\.(ml|re)$/
 const es6ReplaceRegex = /(from\ "\.\.?\/.*)(\.js)("\;)/g
 const commonJsReplaceRegex = /(require\("\.\.?\/.*)(\.js)("\);)/g
 const getErrorRegex = /(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g
+const getSuperErrorRegex = /We've found a bug for you![\s\S]*?(?=ninja: build stopped)/g
 
 const getJsFile = (buildDir, moduleDir, resourcePath, inSource) => {
   const mlFileName = resourcePath.replace(buildDir, '')
@@ -51,7 +52,11 @@ const runBsbSync = () => {
 }
 
 const getBsbErrorMessages = err => {
-  if (typeof err === 'string') return err.match(getErrorRegex)
+  if (typeof err === 'string')
+    return err.match(
+      err.includes('-bs-super-errors') ? getSuperErrorRegex : getErrorRegex
+    )
+
   if (err.message) return [err.message]
 
   return undefined
