@@ -1,4 +1,4 @@
-const { readFile } = require('fs')
+const { readFile, readFileSync } = require('fs')
 const path = require('path')
 const JSON5 = require('json5')
 
@@ -14,4 +14,10 @@ async function readBsConfig(cwd = process.cwd()) {
   return JSON5.parse(content.toString())
 }
 
-module.exports = readBsConfig
+function readBsConfigSync(cwd = process.cwd()) {
+  const content = readFileSync(path.join(cwd, 'bsconfig.json'))
+
+  return JSON5.parse(content.toString())
+}
+
+module.exports = { readBsConfig, readBsConfigSync }

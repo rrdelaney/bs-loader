@@ -4,6 +4,7 @@
   "description": "Library for reading the bsconfig.json for BuckleScript",
   "main": "dist/index.js",
   "scripts": {
+    "build": "babel index.js -o dist/index.js",
     "test": "jest"
   },
   "repository": {
