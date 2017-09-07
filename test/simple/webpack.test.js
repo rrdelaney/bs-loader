@@ -14,20 +14,19 @@ const baseConfig = {
         use: {
           loader,
           options: {
-            module: 'es6',
-            cwd: __dirname
-          }
-        }
-      }
-    ]
+            cwd: __dirname,
+          },
+        },
+      },
+    ],
   },
   resolve: {
-    extensions: ['.re', '.ml', '.js']
+    extensions: ['.re', '.ml', '.js'],
   },
   output: {
     path: output,
-    libraryTarget: 'commonjs2'
-  }
+    libraryTarget: 'commonjs2',
+  },
 }
 
 it('runs', done => {

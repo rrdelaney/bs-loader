@@ -1,3 +1,4 @@
+const { readBsConfigSync } = require('read-bsconfig')
 const path = require('path')
 const { readFile, readFileSync } = require('fs')
 const { execFile, execFileSync } = require('child_process')
@@ -89,11 +90,29 @@ const getCompiledFileSync = (moduleDir, path) => {
   return transformSrc(moduleDir, res.toString())
 }
 
+const getBsConfigModuleOptions = buildDir => {
+  const bsconfig = readBsConfigSync(buildDir)
+  if (!bsconfig) {
+    throw new Error(`bsconfig not found in ${buildDir}`)
+  }
+
+  if (!bsconfig['package-specs'] || !bsconfig['package-specs'].length) {
+    throw new Error('package-specs not defined in bsconfig')
+  }
+
+  const moduleSpec = bsconfig['package-specs'][0]
+  const module = typeof moduleSpec === 'string' ? moduleSpec : moduleSpec.module
+  const inSource =
+    typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
+  return { module, inSource }
+}
+
 module.exports = function loader() {
   const options = getOptions(this) || {}
   const buildDir = options.cwd || CWD
-  const moduleDir = options.module || 'js'
-  const inSourceBuild = options.inSource || false
+  const bsconfig = getBsConfigModuleOptions(buildDir)
+  const moduleDir = bsconfig.module || 'js'
+  const inSourceBuild = bsconfig.inSource || false
 
   this.addContextDependency(this.context)
   const callback = this.async()
