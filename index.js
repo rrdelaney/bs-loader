@@ -2,16 +2,14 @@ const { readFile, readFileSync } = require('fs')
 const path = require('path')
 const JSON5 = require('json5')
 
-async function readBsConfig(cwd = process.cwd()) {
-  const content = await new Promise((resolve, reject) => {
+function readBsConfig(cwd = process.cwd()) {
+  return new Promise((resolve, reject) => {
     readFile(path.join(cwd, 'bsconfig.json'), (err, res) => {
       if (err) return reject(err)
 
-      resolve(res)
+      resolve(JSON5.parse(res.toString()))
     })
   })
-
-  return JSON5.parse(content.toString())
 }
 
 function readBsConfigSync(cwd = process.cwd()) {

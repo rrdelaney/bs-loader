@@ -2,9 +2,8 @@
   "name": "read-bsconfig",
   "version": "1.0.0",
   "description": "Library for reading the bsconfig.json for BuckleScript",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
-    "build": "babel index.js -o dist/index.js",
     "test": "jest"
   },
   "repository": {
@@ -21,12 +20,9 @@
     "json5": "^0.5.1"
   },
   "files": [
-    "index.js",
-    "dist"
+    "index.js"
   ],
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
     "jest": "^21.0.1"
   }
 }
