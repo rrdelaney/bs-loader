@@ -12,9 +12,9 @@ test('Read bsconfig from __dirname', async () => {
     sources: ['src'],
     'bs-dependencies': ['reason-react', 'bs-jest'],
     reason: {
-      'react-jsx': 2,
+      'react-jsx': 2
     },
-    'bsc-flags': ['-bs-super-errors'],
+    'bsc-flags': ['-bs-super-errors']
   })
 })
 
@@ -26,8 +26,8 @@ test('Read bsconfig from __dirname synchronously', () => {
     sources: ['src'],
     'bs-dependencies': ['reason-react', 'bs-jest'],
     reason: {
-      'react-jsx': 2,
+      'react-jsx': 2
     },
-    'bsc-flags': ['-bs-super-errors'],
+    'bsc-flags': ['-bs-super-errors']
   })
 })
