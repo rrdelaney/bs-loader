@@ -1,4 +1,4 @@
-const readBsConfig = require('../')
+const { readBsConfig, readBsConfigSync } = require('../')
 
 test('Read bsconfig from process.cwd()', () => {
   expect(readBsConfig()).rejects.toBeDefined()
@@ -6,6 +6,20 @@ test('Read bsconfig from process.cwd()', () => {
 
 test('Read bsconfig from __dirname', async () => {
   const bsConfig = await readBsConfig(__dirname)
+
+  expect(bsConfig).toEqual({
+    name: 'reason-scripts',
+    sources: ['src'],
+    'bs-dependencies': ['reason-react', 'bs-jest'],
+    reason: {
+      'react-jsx': 2
+    },
+    'bsc-flags': ['-bs-super-errors']
+  })
+})
+
+test('Read bsconfig from __dirname synchronously', () => {
+  const bsConfig = readBsConfigSync(__dirname)
 
   expect(bsConfig).toEqual({
     name: 'reason-scripts',
