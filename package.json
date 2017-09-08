@@ -28,7 +28,7 @@
   "homepage": "https://github.com/rrdelaney/bs-loader#readme",
   "dependencies": {
     "loader-utils": "^1.1.0",
-    "read-bsconfig": "^1.0.0"
+    "read-bsconfig": "^1.0.1"
   },
   "devDependencies": {
     "jest": "^21.0.1",
