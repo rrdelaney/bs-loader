@@ -90,29 +90,31 @@ const getCompiledFileSync = (moduleDir, path) => {
   return transformSrc(moduleDir, res.toString())
 }
 
-const getBsConfigModuleOptions = (buildDir, cb) => {
-  readBsConfig(buildDir).then(bsconfig => {
-    if (!bsconfig) {
-      throw new Error(`bsconfig not found in ${buildDir}`)
-    }
+const getBsConfigModuleOptions = buildDir => {
+  return new Promise((resolve, reject) =>
+    readBsConfig(buildDir).then(bsconfig => {
+      if (!bsconfig) {
+        throw new Error(`bsconfig not found in ${buildDir}`)
+      }
 
-    if (!bsconfig['package-specs'] || !bsconfig['package-specs'].length) {
-      cb({ module: 'js', inSource: false })
-    }
+      if (!bsconfig['package-specs'] || !bsconfig['package-specs'].length) {
+        resolve({ module: 'js', inSource: false })
+      }
 
-    const moduleSpec = bsconfig['package-specs'][0]
-    const moduleDir =
-      typeof moduleSpec === 'string' ? moduleSpec : moduleSpec.module
-    const inSource =
-      typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
-    cb({ moduleDir, inSource })
-  })
+      const moduleSpec = bsconfig['package-specs'][0]
+      const moduleDir =
+        typeof moduleSpec === 'string' ? moduleSpec : moduleSpec.module
+      const inSource =
+        typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
+      resolve({ moduleDir, inSource })
+    })
+  )
 }
 
 module.exports = function loader() {
   const options = getOptions(this) || {}
   const buildDir = options.cwd || CWD
-  const bsconfig = getBsConfigModuleOptions(buildDir, bsconfig => {
+  const bsconfig = getBsConfigModuleOptions(buildDir).then(bsconfig => {
     const moduleDir = options.module || bsconfig.moduleDir || 'js'
     const inSourceBuild = options.inSource || bsconfig.inSource || false
 
