@@ -12,9 +12,9 @@ try {
 }
 
 if(os.platform() === 'darwin') {
-  bsb = `script -q /dev/null ${bsb} -make-world -color`
+  bsb = `script -q /dev/null "${bsb} -make-world -color"`
 } else {
-  bsb = `script --return -qfc ${bsb} -make-world -color /dev/null`
+  bsb = `script --return -qfc "${bsb} -make-world -color" /dev/null`
 }
 
 const outputDir = 'lib'
