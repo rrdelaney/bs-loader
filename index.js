@@ -1,13 +1,20 @@
 const path = require('path')
+const os = require('os')
 const { readFile, readFileSync } = require('fs')
-const { execFile, execFileSync } = require('child_process')
+const { exec, execSync } = require('child_process')
 const { getOptions } = require('loader-utils')
 
 let bsb
 try {
-  bsb = require.resolve('bs-platform/bin/bsb.exe')
+  bsb = require.resolve('bs-platform/bin/bsb.exe');
 } catch (e) {
-  bsb = 'bsb'
+  bsb = `bsb`
+}
+
+if(os.platform() === 'darwin') {
+  bsb = `script -q /dev/null ${bsb}`
+} else {
+  bsb = `script --return -qfc ${bsb} /dev/null`
 }
 
 const outputDir = 'lib'
@@ -39,16 +46,15 @@ const runBsb = (buildDir, compilation, callback) => {
   if (compilation.__HAS_RUN_BSB__) return callback()
   compilation.__HAS_RUN_BSB__ = true
 
-  execFile(
+  exec(
     bsb,
-    ['-make-world'],
     { maxBuffer: Infinity, cwd: buildDir },
     callback
   )
 }
 
 const runBsbSync = () => {
-  execFileSync(bsb, ['-make-world'], { stdio: 'pipe' })
+  execSync(bsb, { stdio: 'pipe' })
 }
 
 const getBsbErrorMessages = err => {
