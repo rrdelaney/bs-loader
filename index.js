@@ -1,3 +1,4 @@
+const { readBsConfig } = require('read-bsconfig')
 const path = require('path')
 const { readFile, readFileSync } = require('fs')
 const { execFile, execFileSync } = require('child_process')
@@ -89,47 +90,70 @@ const getCompiledFileSync = (moduleDir, path) => {
   return transformSrc(moduleDir, res.toString())
 }
 
+const getBsConfigModuleOptions = buildDir =>
+  readBsConfig(buildDir).then(bsconfig => {
+    if (!bsconfig) {
+      throw new Error(`bsconfig not found in ${buildDir}`)
+    }
+
+    if (!bsconfig['package-specs'] || !bsconfig['package-specs'].length) {
+      resolve({ module: 'js', inSource: false })
+    }
+
+    const moduleSpec = bsconfig['package-specs'][0]
+    const moduleDir =
+      typeof moduleSpec === 'string' ? moduleSpec : moduleSpec.module
+    const inSource =
+      typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
+
+    return { moduleDir, inSource }
+  })
+
 module.exports = function loader() {
   const options = getOptions(this) || {}
   const buildDir = options.cwd || CWD
-  const moduleDir = options.module || 'js'
-  const inSourceBuild = options.inSource || false
+  const callback = this.async()
 
   this.addContextDependency(this.context)
-  const callback = this.async()
-  const compiledFilePath = getJsFile(
-    buildDir,
-    moduleDir,
-    this.resourcePath,
-    inSourceBuild
-  )
 
-  getCompiledFile(
-    buildDir,
-    this._compilation,
-    moduleDir,
-    compiledFilePath,
-    (err, res) => {
-      if (err) {
-        if (err instanceof Error) err = err.toString()
-        const errorMessages = getBsbErrorMessages(err)
+  getBsConfigModuleOptions(buildDir).then(bsconfig => {
+    const moduleDir = options.module || bsconfig.moduleDir || 'js'
+    const inSourceBuild = options.inSource || bsconfig.inSource || false
 
-        if (!errorMessages) {
-          if (!(err instanceof Error)) err = new Error(err)
-          this.emitError(err)
-          return callback(err, null)
+    const compiledFilePath = getJsFile(
+      buildDir,
+      moduleDir,
+      this.resourcePath,
+      inSourceBuild
+    )
+
+    getCompiledFile(
+      buildDir,
+      this._compilation,
+      moduleDir,
+      compiledFilePath,
+      (err, res) => {
+        if (err) {
+          if (err instanceof Error) err = err.toString()
+          const errorMessages = getBsbErrorMessages(err)
+
+          if (!errorMessages) {
+            if (!(err instanceof Error)) err = new Error(err)
+            this.emitError(err)
+            return callback(err, null)
+          }
+
+          for (let i = 0; i < errorMessages.length - 1; ++i) {
+            this.emitError(new Error(errorMessages[i]))
+          }
+
+          callback(new Error(errorMessages[errorMessages.length - 1]), null)
+        } else {
+          callback(null, res)
         }
-
-        for (let i = 0; i < errorMessages.length - 1; ++i) {
-          this.emitError(new Error(errorMessages[i]))
-        }
-
-        callback(new Error(errorMessages[errorMessages.length - 1]), null)
-      } else {
-        callback(null, res)
       }
-    }
-  )
+    )
+  })
 }
 
 module.exports.process = (src, filename) => {
