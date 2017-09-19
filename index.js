@@ -7,12 +7,12 @@ const { getOptions } = require('loader-utils')
 
 let bsb
 try {
-  bsb = require.resolve('bs-platform/bin/bsb.exe');
+  bsb = require.resolve('bs-platform/bin/bsb.exe')
 } catch (e) {
   bsb = `bsb`
 }
 
-if(os.platform() === 'darwin') {
+if (os.platform() === 'darwin') {
   bsb = `script -q /dev/null ${bsb} -make-world -color`
 } else {
   bsb = `script --return -qfc "${bsb} -make-world -color" /dev/null`
@@ -47,11 +47,7 @@ const runBsb = (buildDir, compilation, callback) => {
   if (compilation.__HAS_RUN_BSB__) return callback()
   compilation.__HAS_RUN_BSB__ = true
 
-  exec(
-    bsb,
-    { maxBuffer: Infinity, cwd: buildDir },
-    callback
-  )
+  exec(bsb, { maxBuffer: Infinity, cwd: buildDir }, callback)
 }
 
 const runBsbSync = () => {
