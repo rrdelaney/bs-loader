@@ -97,7 +97,7 @@ const getBsConfigModuleOptions = buildDir =>
     }
 
     if (!bsconfig['package-specs'] || !bsconfig['package-specs'].length) {
-      resolve({ module: 'js', inSource: false })
+      return { module: 'js', inSource: false }
     }
 
     const moduleSpec = bsconfig['package-specs'][0]
