@@ -5,18 +5,19 @@ const { readFile, readFileSync } = require('fs')
 const { exec, execSync } = require('child_process')
 const { getOptions } = require('loader-utils')
 
-let bsb
+let bsbCommand
 try {
-  bsb = require.resolve('bs-platform/bin/bsb.exe')
+  bsbCommand = require.resolve('bs-platform/bin/bsb.exe')
 } catch (e) {
-  bsb = `bsb`
+  bsbCommand = `bsb`
 }
 
-if (os.platform() === 'darwin') {
-  bsb = `script -q /dev/null ${bsb} -make-world -color`
-} else {
-  bsb = `script --return -qfc "${bsb} -make-world -color" /dev/null`
-}
+const bsb =
+  os.platform() === 'darwin'
+    ? `script -q /dev/null ${bsbCommand} -make-world -color`
+    : os.platform() === 'linux'
+      ? `script --return -qfc "${bsbCommand} -make-world -color" /dev/null`
+      : bsbCommand
 
 const outputDir = 'lib'
 const CWD = process.cwd()
@@ -27,7 +28,7 @@ const commonJsReplaceRegex = /(require\("\.\.?\/.*)(\.js)("\);)/g
 const getErrorRegex = /(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g
 const getSuperErrorRegex = /We've found a bug for you![\s\S]*?(?=ninja: build stopped)/g
 
-const getJsFile = (buildDir, moduleDir, resourcePath, inSource) => {
+function jsFilePath(buildDir, moduleDir, resourcePath, inSource) {
   const mlFileName = resourcePath.replace(buildDir, '')
   const jsFileName = mlFileName.replace(fileNameRegex, '.js')
 
@@ -38,23 +39,32 @@ const getJsFile = (buildDir, moduleDir, resourcePath, inSource) => {
   return path.join(buildDir, outputDir, moduleDir, jsFileName)
 }
 
-const transformSrc = (moduleDir, src) =>
-  moduleDir === 'es6'
-    ? src.replace(es6ReplaceRegex, '$1$3')
-    : src.replace(commonJsReplaceRegex, '$1$3')
+function transformSrc(moduleDir, src) {
+  const replacer = moduleDir === 'es6' ? es6ReplaceRegex : commonJsReplaceRegex
 
-const runBsb = (buildDir, compilation, callback) => {
-  if (compilation.__HAS_RUN_BSB__) return callback()
-  compilation.__HAS_RUN_BSB__ = true
-
-  exec(bsb, { maxBuffer: Infinity, cwd: buildDir }, callback)
+  return src.replace(replacer, '$1$3')
 }
 
-const runBsbSync = () => {
+function runBsb(buildDir, compilation) {
+  if (compilation.__HAS_RUN_BSB__) return Promise.resolve()
+  compilation.__HAS_RUN_BSB__ = true
+
+  return new Promise((resolve, reject) => {
+    exec(bsb, { maxBuffer: Infinity, cwd: buildDir }, (err, stdout, stderr) => {
+      if (err) {
+        reject(`${stdout}\n${stderr}`)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
+function runBsbSync() {
   execSync(bsb, { stdio: 'pipe' })
 }
 
-const getBsbErrorMessages = err => {
+function processBsbError(err) {
   if (typeof err === 'string')
     return err.match(
       err.includes('-bs-super-errors') ? getSuperErrorRegex : getErrorRegex
@@ -65,23 +75,22 @@ const getBsbErrorMessages = err => {
   return undefined
 }
 
-const getCompiledFile = (buildDir, compilation, moduleDir, path, callback) => {
-  runBsb(buildDir, compilation, (err, stdout, stderr) => {
-    const errorOutput = `${stdout}\n${stderr}`
-    if (err) return callback(errorOutput, null)
-
-    readFile(path, (err, res) => {
-      if (err) {
-        callback(err, err)
-      } else {
-        const src = transformSrc(moduleDir, res.toString())
-        callback(null, src)
-      }
+function getCompiledFile(buildDir, compilation, moduleDir, path) {
+  return runBsb(buildDir, compilation).then(() => {
+    return new Promise((resolve, reject) => {
+      readFile(path, (err, res) => {
+        if (err) {
+          reject(err)
+        } else {
+          const src = transformSrc(moduleDir, res.toString())
+          resolve(src)
+        }
+      })
     })
   })
 }
 
-const getCompiledFileSync = (moduleDir, path) => {
+function getCompiledFileSync(moduleDir, path) {
   try {
     runBsbSync()
   } catch (e) {
@@ -92,8 +101,8 @@ const getCompiledFileSync = (moduleDir, path) => {
   return transformSrc(moduleDir, res.toString())
 }
 
-const getBsConfigModuleOptions = buildDir =>
-  readBsConfig(buildDir).then(bsconfig => {
+function getBsConfigModuleOptions(buildDir) {
+  return readBsConfig(buildDir).then(bsconfig => {
     if (!bsconfig) {
       throw new Error(`bsconfig not found in ${buildDir}`)
     }
@@ -110,6 +119,7 @@ const getBsConfigModuleOptions = buildDir =>
 
     return { moduleDir, inSource }
   })
+}
 
 module.exports = function loader() {
   const options = getOptions(this) || {}
@@ -122,51 +132,45 @@ module.exports = function loader() {
     const moduleDir = options.module || bsconfig.moduleDir || 'js'
     const inSourceBuild = options.inSource || bsconfig.inSource || false
 
-    const compiledFilePath = getJsFile(
+    const compiledFilePath = jsFilePath(
       buildDir,
       moduleDir,
       this.resourcePath,
       inSourceBuild
     )
 
-    getCompiledFile(
-      buildDir,
-      this._compilation,
-      moduleDir,
-      compiledFilePath,
-      (err, res) => {
-        if (err) {
-          if (err instanceof Error) err = err.toString()
-          const errorMessages = getBsbErrorMessages(err)
+    getCompiledFile(buildDir, this._compilation, moduleDir, compiledFilePath)
+      .then(res => {
+        callback(null, res)
+      })
+      .catch(err => {
+        if (err instanceof Error) err = err.toString()
+        const errorMessages = processBsbError(err)
 
-          if (!errorMessages) {
-            if (!(err instanceof Error)) err = new Error(err)
-            this.emitError(err)
-            return callback(err, null)
-          }
-
-          for (let i = 0; i < errorMessages.length - 1; ++i) {
-            this.emitError(new Error(errorMessages[i]))
-          }
-
-          callback(new Error(errorMessages[errorMessages.length - 1]), null)
-        } else {
-          callback(null, res)
+        if (!errorMessages) {
+          if (!(err instanceof Error)) err = new Error(err)
+          this.emitError(err)
+          return callback(err, null)
         }
-      }
-    )
+
+        for (let i = 0; i < errorMessages.length - 1; ++i) {
+          this.emitError(new Error(errorMessages[i]))
+        }
+
+        callback(new Error(errorMessages[errorMessages.length - 1]), null)
+      })
   })
 }
 
 module.exports.process = (src, filename) => {
   const moduleDir = 'js'
-  const compiledFilePath = getJsFile(CWD, moduleDir, filename, false)
+  const compiledFilePath = jsFilePath(CWD, moduleDir, filename, false)
 
   try {
     return getCompiledFileSync(moduleDir, compiledFilePath)
   } catch (err) {
     if (err instanceof Error) err = err.toString()
-    const bsbErrorMessages = getBsbErrorMessages(err)
+    const bsbErrorMessages = processBsbError(err)
 
     if (bsbErrorMessages && bsbErrorMessages.length > 0) {
       throw new Error(bsbErrorMessages[0])
