@@ -1,9 +1,12 @@
+// @flow
+
 const { readBsConfig } = require('read-bsconfig')
 const path = require('path')
 const os = require('os')
 const { readFile, readFileSync } = require('fs')
 const { exec, execSync } = require('child_process')
 const { getOptions } = require('loader-utils')
+/*:: import type { WebpackLoaderThis } from 'webpack' */
 
 let bsbCommand
 try {
@@ -52,7 +55,7 @@ function runBsb(buildDir, compilation) {
   return new Promise((resolve, reject) => {
     exec(bsb, { maxBuffer: Infinity, cwd: buildDir }, (err, stdout, stderr) => {
       if (err) {
-        reject(`${stdout}\n${stderr}`)
+        reject(`${stdout.toString()}\n${stderr.toString()}`)
       } else {
         resolve()
       }
@@ -162,7 +165,12 @@ module.exports = function loader() {
   })
 }
 
-module.exports.process = (src, filename) => {
+/*:: declare var c: WebpackLoaderThis; module.exports.call(c) */
+
+module.exports.process = function process(
+  src /*: string */,
+  filename /*: string */
+) {
   const moduleDir = 'js'
   const compiledFilePath = jsFilePath(CWD, moduleDir, filename, false)
 
