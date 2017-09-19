@@ -1,5 +1,5 @@
 {
-  "name": "reason-webpack",
+  "name": "reason-webpack-commonjs-example",
   "private": true,
   "version": "1.1.0",
   "description": "",
@@ -22,14 +22,8 @@
     "react-dom": "^15.4.2"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "re",
-      "js",
-      "ml"
-    ],
-    "testMatch": [
-      "**/src/*_test.re"
-    ],
+    "moduleFileExtensions": ["re", "js", "ml"],
+    "testMatch": ["**/src/*_test.re"],
     "transform": {
       ".(re|ml)": "bs-loader"
     }

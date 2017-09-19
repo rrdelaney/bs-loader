@@ -4,30 +4,30 @@
   "description": "Bucklescript integration in Webpack",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "flow && jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rrdelaney/bs-loader.git"
+    "url": "git+https://github.com/reasonml-community.git"
   },
   "files": ["index.js"],
   "keywords": ["bucklescript", "reason", "webpack", "ocaml", "reasonml"],
   "author": "Ryan Delaney <rrdelaney@outlook.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rrdelaney/bs-loader/issues"
+    "url": "https://github.com/reasonml-community/issues"
   },
-  "homepage": "https://github.com/rrdelaney/bs-loader#readme",
+  "homepage": "https://github.com/reasonml-community#readme",
   "dependencies": {
     "loader-utils": "^1.1.0",
     "read-bsconfig": "^1.0.1"
   },
   "devDependencies": {
+    "flow-bin": "^0.54.1",
     "jest": "^21.0.1",
     "webpack": "^3.5.4"
   },
   "jest": {
-    "testPathIgnorePatterns": ["/node_modules/", "/test/", "/example/"],
-    "projects": ["test/*"]
+    "testPathIgnorePatterns": ["/node_modules/", "/example/"]
   }
 }
