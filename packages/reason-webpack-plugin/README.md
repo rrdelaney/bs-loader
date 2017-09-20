@@ -1,51 +1,24 @@
 # reason-webpack-plugin
 
-<pre align="center">
-  yarn add --dev reason-webpack-plugin
-</pre>
+> `yarn add --dev reason-webpack-plugin`
 
-> Webpack plugin to generate Reason types after compilation
+### Installation
 
-<h3 align="center">
-  Add the plugin
-</h3>
+Add the plugin to your webpack config
 
 ```js
-plugins: [
-  new ReasonPlugin({ sources: 'src', output: 'types' })
-]
-```
+// webpack.config.js
+const ReasonPlugin = require('reason-webpack-plugin')
 
-<h3 align="center">
-  Type your exports
-</h3>
-
-```js
-// @flow
-// math_ops.js
-
-export function add(x: number, y: number): number {
-  return x + y
-}
-
-export function sub(x: number, y: number): number {
-  return x - y
+module.exports = {
+  // ...
+  plugins: [
+    new ReasonPlugin({ sources: 'src' })
+  ]
 }
 ```
 
-<h3 align="center">
-  Use JS code from Reason
-</h3>
-
-```reason
-let sum = Math_ops.add 1. 4.2;
-
-let diff = Math_ops.sub 10. 3.1;
-```
-
-<h3 align="center">
-  Use Reason code from JS
-</h3>
+ReasonPlugin will generate `.js.flow` files for you
 
 ```js
 // @flow
