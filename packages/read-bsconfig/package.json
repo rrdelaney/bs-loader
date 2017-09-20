@@ -1,0 +1,26 @@
+{
+  "name": "read-bsconfig",
+  "version": "1.0.2",
+  "description": "Library for reading the bsconfig.json for BuckleScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rrdelaney/read-bsconfig.git"
+  },
+  "author": "Ryan Delaney <rrdelaney@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rrdelaney/read-bsconfig/issues"
+  },
+  "homepage": "https://github.com/rrdelaney/read-bsconfig#readme",
+  "dependencies": {
+    "json5": "^0.5.1"
+  },
+  "files": ["index.js"],
+  "devDependencies": {
+    "jest": "^21.0.1"
+  }
+}
