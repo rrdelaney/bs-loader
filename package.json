@@ -1,0 +1,19 @@
+{
+  "name": "reason-tooling",
+  "private": true,
+  "devDependencies": {
+    "flow-bin": "^0.54.1",
+    "jest-cli": "^21.1.0"
+  },
+  "scripts": {
+    "test": "flow && jest"
+  },
+  "workspaces": [
+    "packages/bs-loader", "packages/read-bsconfig"
+  ],
+  "jest": {
+    "projects": [
+      "packages/*"
+    ]
+  }
+}

@@ -4,7 +4,7 @@
   "description": "Bucklescript integration in Webpack",
   "main": "index.js",
   "scripts": {
-    "test": "flow && jest"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,6 @@
     "read-bsconfig": "^1.0.1"
   },
   "devDependencies": {
-    "flow-bin": "^0.54.1",
     "jest": "^21.0.1",
     "webpack": "^3.5.4"
   },
