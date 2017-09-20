@@ -8,16 +8,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reasonml-community.git"
+    "url": "git+https://github.com/reasonml-community/reason-scripts.git"
   },
-  "files": ["index.js"],
-  "keywords": ["bucklescript", "reason", "webpack", "ocaml", "reasonml"],
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "bucklescript",
+    "reason",
+    "webpack",
+    "ocaml",
+    "reasonml"
+  ],
   "author": "Ryan Delaney <rrdelaney@outlook.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/reasonml-community/issues"
+    "url": "https://github.com/reasonml-community/reason-scripts/issues"
   },
-  "homepage": "https://github.com/reasonml-community#readme",
+  "homepage": "https://github.com/reasonml-community/reason-scripts#readme",
   "dependencies": {
     "loader-utils": "^1.1.0",
     "read-bsconfig": "^1.0.1"
@@ -27,6 +35,9 @@
     "webpack": "^3.5.4"
   },
   "jest": {
-    "testPathIgnorePatterns": ["/node_modules/", "/example/"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/example/"
+    ]
   }
 }

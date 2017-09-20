@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rrdelaney/read-bsconfig.git"
+    "url": "git+https://github.com/reasonml-community/reason-scripts.git"
   },
   "author": "Ryan Delaney <rrdelaney@outlook.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rrdelaney/read-bsconfig/issues"
+    "url": "https://github.com/reasonml-community/reason-scripts/issues"
   },
-  "homepage": "https://github.com/rrdelaney/read-bsconfig#readme",
+  "homepage": "https://github.com/reasonml-community/reason-scripts#readme",
   "dependencies": {
     "json5": "^0.5.1"
   },
