@@ -1,17 +1,14 @@
 {
-  "name": "get-typed-reason-webpack-plugin",
+  "name": "reason-webpack-plugin",
   "version": "1.0.0",
-  "description": "Webpack plugin to generate Reason types after compilation",
+  "description": "Webpack plugin for ReasonML",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "peerDependencies": {
-    "get-typed": "*"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rrdelaney/get-typed-reason-webpack-plugin"
+    "url": "https://github.com/reasonml-community/reason-tooling"
   },
   "keywords": [
     "webpack",
@@ -23,15 +20,11 @@
   "author": "Ryan Delaney <rrdelaney@outlook.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rrdelaney/get-typed-reason-webpack-plugin/issues"
+    "url": "https://github.com/reasonml-community/reason-tooling/issues"
   },
-  "homepage": "https://github.com/rrdelaney/get-typed-reason-webpack-plugin",
-  "devDependencies": {
-    "get-typed": "^1.0.0-beta.1"
-  },
+  "homepage": "https://github.com/reasonml-community/reason-tooling",
   "dependencies": {
     "glob": "^7.1.2",
-    "mkdirp": "^0.5.1",
     "reasonable-flowgen": "^0.1.5"
   }
 }

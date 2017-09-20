@@ -9,4 +9,12 @@ declare module 'webpack' {
     _compilation: { [key: string]: any },
     emitError: (err: Error) => void
   }
+
+  declare export type WebpackCompilerInstance = {
+    plugin: (
+      event: string,
+      callback: (compilation: any, callback: () => void) => void | Promise<void>
+    ) => void,
+    context: string
+  }
 }
