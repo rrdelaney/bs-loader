@@ -1,6 +1,3 @@
 .DS_Store
 node_modules/
 *.log
-test/*/lib
-test/*/output
-test/*/.merlin
