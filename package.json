@@ -9,11 +9,17 @@
     "test": "flow && jest"
   },
   "workspaces": [
-    "packages/bs-loader", "packages/read-bsconfig"
+    "packages/bs-loader",
+    "packages/read-bsconfig",
+    "packages/bsb-js",
+    "packages/reason-webpack-plugin"
   ],
   "jest": {
     "projects": [
-      "packages/*"
+      "packages/bs-loader",
+      "packages/read-bsconfig",
+      "packages/bsb-js",
+      "packages/reason-webpack-plugin"
     ]
   }
 }
