@@ -20,7 +20,7 @@ const bsb =
     ? `script -q /dev/null ${bsbCommand} -make-world -color`
     : os.platform() === 'linux'
       ? `script --return -qfc "${bsbCommand} -make-world -color" /dev/null`
-      : bsbCommand
+      : `${bsbCommand} -make-world`
 
 const outputDir = 'lib'
 const CWD = process.cwd()
