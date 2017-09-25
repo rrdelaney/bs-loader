@@ -121,6 +121,9 @@ Reason and OCaml files as tests. An example Jest configuration using `bs-loader`
 
 ## Options
 
+Most of these settings are inferred from your `bsconfig.json`. These are available
+for manual override, but might go away in the future.
+
 ### `module`
 
 To tell Webpack to load a module type that isn't JS (for example, `amd` or `goog`)
