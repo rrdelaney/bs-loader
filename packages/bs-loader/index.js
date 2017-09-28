@@ -17,10 +17,10 @@ try {
 
 const bsb =
   os.platform() === 'darwin'
-    ? `script -q /dev/null ${bsbCommand} -make-world -color`
+    ? `script -q /dev/null ${bsbCommand} -clean-world -make-world -color`
     : os.platform() === 'linux'
-      ? `script --return -qfc "${bsbCommand} -make-world -color" /dev/null`
-      : `${bsbCommand} -make-world`
+      ? `script --return -qfc "${bsbCommand} -clean-world -make-world -color" /dev/null`
+      : `${bsbCommand} -clean-world -make-world`
 
 const outputDir = 'lib'
 const CWD = process.cwd()
@@ -30,6 +30,7 @@ const es6ReplaceRegex = /(from\ "\.\.?\/.*)(\.js)("\;)/g
 const commonJsReplaceRegex = /(require\("\.\.?\/.*)(\.js)("\);)/g
 const getErrorRegex = /(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g
 const getSuperErrorRegex = /We've found a bug for you![\s\S]*?(?=ninja: build stopped)/g
+const getWarningRegex = /((File [\s\S]*?Warning.+? \d+:)|Warning number \d+)[\s\S]*?(?=\[\d+\/\d+\]|$)/g
 
 function jsFilePath(buildDir, moduleDir, resourcePath, inSource) {
   const mlFileName = resourcePath.replace(buildDir, '')
@@ -54,10 +55,11 @@ function runBsb(buildDir, compilation) {
 
   return new Promise((resolve, reject) => {
     exec(bsb, { maxBuffer: Infinity, cwd: buildDir }, (err, stdout, stderr) => {
+      let output = `${stdout.toString()}\n${stderr.toString()}`
       if (err) {
-        reject(`${stdout.toString()}\n${stderr.toString()}`)
+        reject(output)
       } else {
-        resolve()
+        resolve(output)
       }
     })
   })
@@ -78,15 +80,19 @@ function processBsbError(err) {
   return undefined
 }
 
+function getWarningsFromOutput(output) {
+  return output.match(getWarningRegex)
+}
+
 function getCompiledFile(buildDir, compilation, moduleDir, path) {
-  return runBsb(buildDir, compilation).then(() => {
+  return runBsb(buildDir, compilation).then((output) => {
     return new Promise((resolve, reject) => {
       readFile(path, (err, res) => {
         if (err) {
           reject(err)
         } else {
           const src = transformSrc(moduleDir, res.toString())
-          resolve(src)
+          resolve({ src, output })
         }
       })
     })
@@ -134,6 +140,7 @@ module.exports = function loader() {
   getBsConfigModuleOptions(buildDir).then(bsconfig => {
     const moduleDir = options.module || bsconfig.moduleDir || 'js'
     const inSourceBuild = options.inSource || bsconfig.inSource || false
+    const showWarnings = (options.showWarnings !== undefined) ? options.showWarnings : true
 
     const compiledFilePath = jsFilePath(
       buildDir,
@@ -143,8 +150,17 @@ module.exports = function loader() {
     )
 
     getCompiledFile(buildDir, this._compilation, moduleDir, compiledFilePath)
-      .then(res => {
-        callback(null, res)
+      .then(({ src, output }) => {
+        if (output && showWarnings) {
+          let warningMessages = getWarningsFromOutput(output)
+          if (warningMessages) {
+            for (let i = 0; i < warningMessages.length; ++i) {
+              this.emitWarning(new Error(warningMessages[i]))
+            }
+          }
+        }
+
+        callback(null, src)
       })
       .catch(err => {
         if (err instanceof Error) err = err.toString()

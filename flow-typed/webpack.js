@@ -7,7 +7,8 @@ declare module 'webpack' {
     addContextDependency: (dep: string) => void,
     resourcePath: string,
     _compilation: { [key: string]: any },
-    emitError: (err: Error) => void
+    emitError: (err: Error) => void,
+    emitWarning: (err: Error) => void
   }
 
   declare export type WebpackCompilerInstance = {

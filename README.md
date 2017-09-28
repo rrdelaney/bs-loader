@@ -168,3 +168,7 @@ run `bsb` from the same directory as your webpack config, use:
   }
 }
 ```
+
+### `showWarnings`
+
+Controls whether `bsb` compile warnings are shown. Defaults to `true`.
