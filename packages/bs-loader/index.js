@@ -50,10 +50,10 @@ function transformSrc(moduleDir, src) {
 
 function runBsb(buildDir, compilation) {
   if (compilation.__HAS_RUN_BSB__) return Promise.resolve()
-  compilation.__HAS_RUN_BSB__ = true
 
   return new Promise((resolve, reject) => {
     exec(bsb, { maxBuffer: Infinity, cwd: buildDir }, (err, stdout, stderr) => {
+      compilation.__HAS_RUN_BSB__ = true
       if (err) {
         reject(`${stdout.toString()}\n${stderr.toString()}`)
       } else {
