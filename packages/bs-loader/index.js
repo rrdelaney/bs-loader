@@ -49,18 +49,23 @@ function transformSrc(moduleDir, src) {
 }
 
 function runBsb(buildDir, compilation) {
-  if (compilation.__HAS_RUN_BSB__) return Promise.resolve()
-
-  return new Promise((resolve, reject) => {
-    exec(bsb, { maxBuffer: Infinity, cwd: buildDir }, (err, stdout, stderr) => {
-      compilation.__HAS_RUN_BSB__ = true
-      if (err) {
-        reject(`${stdout.toString()}\n${stderr.toString()}`)
-      } else {
-        resolve()
-      }
+  if (!compilation.bsbRunner) {
+    compilation.bsbRunner = new Promise((resolve, reject) => {
+      exec(
+        bsb,
+        { maxBuffer: Infinity, cwd: buildDir },
+        (err, stdout, stderr) => {
+          if (err) {
+            reject(`${stdout.toString()}\n${stderr.toString()}`)
+          } else {
+            resolve()
+          }
+        }
+      )
     })
-  })
+  }
+
+  return compilation.bsbRunner
 }
 
 function runBsbSync() {
