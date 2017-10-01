@@ -11,7 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "bs-jest": "^0.1.0",
-    "bs-loader": "^1.7.0",
+    "bs-loader": "^1.8.0",
     "jest": "^20.0.4",
     "reason-react": "^0.2.1",
     "webpack": "^2.2.1",
