@@ -1,6 +1,8 @@
 const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
+const { exec } = require('child_process')
+const getBsbCommand = require('../../lib/bsb-command')
 
 const output = path.join(__dirname, 'output', 'webpack')
 const loader = path.join(__dirname, '..', '..')
@@ -30,10 +32,18 @@ const baseConfig = {
 }
 
 it('runs', done => {
-  webpack(baseConfig, (err, stats) => {
-    expect(err).toBeNull()
-    expect(stats.toJson().warnings.length).toBe(1)
+  let bsb = getBsbCommand('-clean-world')
+  exec(bsb, { maxBuffer: Infinity, cwd: __dirname }, (err, stdout, stderr) => {
+    if(err) {
+      done(err)
+      return
+    }
 
-    done()
+    webpack(baseConfig, (err, stats) => {
+      expect(err).toBeNull()
+      expect(stats.toJson().warnings.length).toBe(1)
+
+      done()
+    })
   })
 })

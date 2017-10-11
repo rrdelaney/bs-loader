@@ -2,25 +2,13 @@
 
 const { readBsConfig } = require('read-bsconfig')
 const path = require('path')
-const os = require('os')
 const { readFile, readFileSync } = require('fs')
 const { exec, execSync } = require('child_process')
 const { getOptions } = require('loader-utils')
+const getBsbCommand = require('./lib/bsb-command')
 /*:: import type { WebpackLoaderThis } from 'webpack' */
 
-let bsbCommand
-try {
-  bsbCommand = require.resolve('bs-platform/bin/bsb.exe')
-} catch (e) {
-  bsbCommand = `bsb`
-}
-
-const bsb =
-  os.platform() === 'darwin'
-    ? `script -q /dev/null ${bsbCommand} -clean-world -make-world -color`
-    : os.platform() === 'linux'
-      ? `script --return -qfc "${bsbCommand} -clean-world -make-world -color" /dev/null`
-      : `${bsbCommand} -clean-world -make-world`
+const bsb = getBsbCommand('-make-world')
 
 const outputDir = 'lib'
 const CWD = process.cwd()
