@@ -1,35 +1,35 @@
 // @flow
 
 /*::
-type BsDependency = string
+export type BsDependency = string
 
-type BsRuleGenerator = {
+export type BsRuleGenerator = {
   name: string,
   command: string
 }
 
-type BsJsxVersion = boolean | number
+export type BsJsxVersion = boolean | number
 
-type BsReasonSpecs = {
+export type BsReasonSpecs = {
   'react-jsx': BsJsxVersion
 }
 
-type BsJsPostBuild = {
+export type BsJsPostBuild = {
   cmd: string
 }
 
-type BsModuleFormat =
+export type BsModuleFormat =
   | 'commonjs'
   | 'amdjs'
   | 'amdjs-global'
   | 'es6'
   | 'es6-global'
 
-type BsPackageSpec =
+export type BsPackageSpec =
   | BsModuleFormat
   | { module: BsModuleFormat, 'in-source': boolean }
 
-type BsConfig = {
+export type BsConfig = {
   version: string,
   name: string,
   namespace: boolean,
