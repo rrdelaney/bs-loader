@@ -2,13 +2,25 @@
 
 const { readBsConfig } = require('read-bsconfig')
 const path = require('path')
+const os = require('os')
 const { readFile, readFileSync } = require('fs')
 const { exec, execSync } = require('child_process')
 const { getOptions } = require('loader-utils')
-const getBsbCommand = require('./lib/bsb-command')
 /*:: import type { WebpackLoaderThis } from 'webpack' */
 
-const bsb = getBsbCommand('-make-world')
+let bsbCommand
+try {
+  bsbCommand = require.resolve('bs-platform/bin/bsb.exe')
+} catch (e) {
+  bsbCommand = `bsb`
+}
+
+const bsb =
+  os.platform() === 'darwin'
+    ? `script -q /dev/null ${bsbCommand} -make-world -color`
+    : os.platform() === 'linux'
+      ? `script --return -qfc "${bsbCommand} -make-world -color" /dev/null`
+      : `${bsbCommand} -make-world`
 
 const outputDir = 'lib'
 const CWD = process.cwd()
@@ -44,7 +56,7 @@ function runBsb(buildDir, compilation) {
         bsb,
         { maxBuffer: Infinity, cwd: buildDir },
         (err, stdout, stderr) => {
-          let output = `${stdout.toString()}\n${stderr.toString()}`
+          const output = `${stdout.toString()}\n${stderr.toString()}`
           if (err) {
             reject(output)
           } else {
@@ -71,10 +83,6 @@ function processBsbError(err) {
   if (err.message) return [err.message]
 
   return undefined
-}
-
-function getWarningsFromOutput(output) {
-  return output.match(getWarningRegex)
 }
 
 function getCompiledFile(buildDir, compilation, moduleDir, path) {
@@ -145,11 +153,11 @@ module.exports = function loader() {
     getCompiledFile(buildDir, this._compilation, moduleDir, compiledFilePath)
       .then(({ src, output }) => {
         if (output && showWarnings) {
-          let warningMessages = getWarningsFromOutput(output)
+          const warningMessages = output.match(getWarningRegex)
           if (warningMessages) {
-            for (let i = 0; i < warningMessages.length; ++i) {
-              this.emitWarning(new Error(warningMessages[i]))
-            }
+            warningMessages.forEach(message => {
+              this.emitWarning(new Error(message))
+            });
           }
         }
 

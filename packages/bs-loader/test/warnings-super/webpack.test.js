@@ -1,8 +1,8 @@
 const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
+const os = require('os')
 const { exec } = require('child_process')
-const getBsbCommand = require('../../lib/bsb-command')
 
 const output = path.join(__dirname, 'output', 'webpack')
 const loader = path.join(__dirname, '..', '..')
@@ -31,8 +31,21 @@ const baseConfig = {
   }
 }
 
+let bsbCommand
+try {
+  bsbCommand = require.resolve('bs-platform/bin/bsb.exe')
+} catch (e) {
+  bsbCommand = `bsb`
+}
+
+const bsb =
+  os.platform() === 'darwin'
+    ? `script -q /dev/null ${bsbCommand} -clean-world -color`
+    : os.platform() === 'linux'
+      ? `script --return -qfc "${bsbCommand} -clean-world -color" /dev/null`
+      : `${bsbCommand} -clean-world`
+
 it('runs', done => {
-  let bsb = getBsbCommand('-clean-world')
   exec(bsb, { maxBuffer: Infinity, cwd: __dirname }, (err, stdout, stderr) => {
     if(err) {
       done(err)
