@@ -15,12 +15,19 @@ try {
   bsbCommand = `bsb`
 }
 
+function isWSL() {
+  let release = os.release();
+  return release.substring(release.length - 'Microsoft'.length) == 'Microsoft'
+}
+
 const bsb =
   os.platform() === 'darwin'
     ? `script -q /dev/null ${bsbCommand} -make-world -color`
     : os.platform() === 'linux'
-      ? `script --return -qfc "${bsbCommand} -make-world -color" /dev/null`
-      : `${bsbCommand} -make-world`
+      ? isWSL()
+        ? `${bsbCommand} -make-world` // Windows WSL
+        : `script --return -qfc "${bsbCommand} -make-world -color" /dev/null` // Linux
+      : `${bsbCommand} -make-world` // Windows Native and others.
 
 const outputDir = 'lib'
 const CWD = process.cwd()
