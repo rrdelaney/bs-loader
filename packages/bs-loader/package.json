@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/reasonml-community/reason-scripts#readme",
   "dependencies": {
+    "bsb-js": "^1.0.0",
     "loader-utils": "^1.1.0",
     "read-bsconfig": "^1.0.1"
   },

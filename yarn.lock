@@ -1921,6 +1921,10 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
+lodash@4.9.0:
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.9.0.tgz#4c20d742f03ce85dc700e0dd7ab9bcab85e6fc14"
+
 lodash@^4.14.0, lodash@^4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
@@ -2491,6 +2495,14 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
+reasonable-flowgen@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/reasonable-flowgen/-/reasonable-flowgen-0.1.5.tgz#39a9a303a2ab10681f1fabf7d51d4bca684ddf4e"
+  dependencies:
+    lodash "4.9.0"
+    typescript "2.1.4"
+    typescript-compiler "^1.4.1-2"
+
 regenerator-runtime@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.0.tgz#7e54fe5b5ccd5d6624ea6255c3473be090b802e1"
@@ -2936,6 +2948,14 @@ type-check@~0.3.2:
   resolved "https://registry.yarnpkg.com/type-check/-/type-check-0.3.2.tgz#5884cab512cf1d355e3fb784f30804b2b520db72"
   dependencies:
     prelude-ls "~1.1.2"
+
+typescript-compiler@^1.4.1-2:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/typescript-compiler/-/typescript-compiler-1.4.1.tgz#3639a276d7f3bc97ddbe121fd933713d475a9aa8"
+
+typescript@2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.4.tgz#b53b69fb841126acb1dd4b397d21daba87572251"
 
 uglify-js@^2.6, uglify-js@^2.8.29:
   version "2.8.29"
