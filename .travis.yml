@@ -1,18 +1,19 @@
-sudo: required
-
 os:
   - linux
   - osx
 
 language: node_js
-node_js:
-  - 8
 
-cache:
-  directories:
-    - "node_modules"
+node_js:
+  - "node"
+  - "lts/*"
+
+cache: yarn
 
 install:
-  - "sudo npm i -g bs-platform"
-  - "npm install"
-  - "npm link bs-platform"
+  - "yarn global add bs-platform"
+  - "yarn install"
+  - "yarn link bs-platform"
+
+test:
+  - "yarn test"
