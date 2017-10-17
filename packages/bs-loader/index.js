@@ -16,8 +16,8 @@ try {
 }
 
 function isWSL() {
-  let release = os.release();
-  return release.substring(release.length - 'Microsoft'.length) == 'Microsoft'
+  const release = os.release()
+  return release.substring(release.length - 'Microsoft'.length) === 'Microsoft'
 }
 
 const bsb =
@@ -93,7 +93,7 @@ function processBsbError(err) {
 }
 
 function getCompiledFile(buildDir, compilation, moduleDir, path) {
-  return runBsb(buildDir, compilation).then((output) => {
+  return runBsb(buildDir, compilation).then(output => {
     return new Promise((resolve, reject) => {
       readFile(path, (err, res) => {
         if (err) {
@@ -148,7 +148,8 @@ module.exports = function loader() {
   getBsConfigModuleOptions(buildDir).then(bsconfig => {
     const moduleDir = options.module || bsconfig.moduleDir || 'js'
     const inSourceBuild = options.inSource || bsconfig.inSource || false
-    const showWarnings = (options.showWarnings !== undefined) ? options.showWarnings : true
+    const showWarnings =
+      options.showWarnings !== undefined ? options.showWarnings : true
 
     const compiledFilePath = jsFilePath(
       buildDir,
@@ -164,7 +165,7 @@ module.exports = function loader() {
           if (warningMessages) {
             warningMessages.forEach(message => {
               this.emitWarning(new Error(message))
-            });
+            })
           }
         }
 
