@@ -13,6 +13,6 @@ cache:
     - "node_modules"
 
 install:
-  - "npm i -g bs-platform"
+  - "sudo npm i -g bs-platform"
   - "npm install"
   - "npm link bs-platform"
