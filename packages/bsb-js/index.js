@@ -37,7 +37,7 @@ const getSuperErrorRegex = /We've found a bug for you![\s\S]*?(?=ninja: build st
 const getWarningRegex = /((File [\s\S]*?Warning.+? \d+:)|Warning number \d+)[\s\S]*?(?=\[\d+\/\d+\]|$)/g
 
 const utils = {
-  transformSrc(moduleType /*: BsModuleFormat */, src /*: string */) {
+  transformSrc(moduleType /*: BsModuleFormat | 'js' */, src /*: string */) {
     const replacer =
       moduleType === 'es6' ? es6ReplaceRegex : commonJsReplaceRegex
 
@@ -100,7 +100,7 @@ const buildRuns /*: { [buildId: string]: Promise<string> } */ = {}
  */
 function compileFile(
   buildDir /*: string */,
-  moduleType /*: BsModuleFormat */,
+  moduleType /*: BsModuleFormat | 'js' */,
   path /*: string */,
   id /*: ?string */ = null
 ) /*: Promise<Compilation> */ {
@@ -144,7 +144,7 @@ function compileFile(
  * Compiles a Reason file to JS sync
  */
 function compileFileSync(
-  moduleType /*: BsModuleFormat */,
+  moduleType /*: BsModuleFormat | 'js' */,
   path /*: string */
 ) /*: string */ {
   try {
