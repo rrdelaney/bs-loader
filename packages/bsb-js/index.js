@@ -3,6 +3,7 @@
 const os = require('os')
 const { exec, execSync } = require('child_process')
 const { readFile, readFileSync } = require('fs')
+const utils = require('./utils')
 /*:: import type { BsModuleFormat } from 'read-bsconfig' */
 
 let bsbCommand
@@ -12,58 +13,23 @@ try {
   bsbCommand = `bsb`
 }
 
-function isWSL() {
-  const release = os.release()
-  return release.substring(release.length - 'Microsoft'.length) === 'Microsoft'
-}
-
-const bsb =
-  os.platform() === 'darwin'
-    ? `script -q /dev/null ${bsbCommand} -make-world -color`
-    : os.platform() === 'linux'
-      ? isWSL()
-        ? `${bsbCommand} -make-world` // Windows WSL
-        : `script --return -qfc "${bsbCommand} -make-world -color" /dev/null` // Linux
-      : `${bsbCommand} -make-world` // Windows Native and others.
-
-const outputDir = 'lib'
-const CWD = process.cwd()
-
-const fileNameRegex = /\.(ml|re)$/
-const es6ReplaceRegex = /(from\ "\.\.?\/.*)(\.js)("\;)/g
-const commonJsReplaceRegex = /(require\("\.\.?\/.*)(\.js)("\);)/g
-const getErrorRegex = /(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g
-const getSuperErrorRegex = /We've found a bug for you![\s\S]*?(?=ninja: build stopped)/g
-const getWarningRegex = /((File [\s\S]*?Warning.+? \d+:)|Warning number \d+)[\s\S]*?(?=\[\d+\/\d+\]|$)/g
-
-const utils = {
-  transformSrc(moduleType /*: BsModuleFormat | 'js' */, src /*: string */) {
-    const replacer =
-      moduleType === 'es6' ? es6ReplaceRegex : commonJsReplaceRegex
-
-    return src.replace(replacer, '$1$3')
-  },
-
-  processBsbError(err) {
-    if (typeof err === 'string')
-      return err.match(
-        err.includes('-bs-super-errors') ? getSuperErrorRegex : getErrorRegex
-      )
-
-    if (err.message) return [err.message]
-
-    return []
-  },
-
-  processBsbWarnings(output) {
-    return output.match(getWarningRegex) || []
+const bsb = (() => {
+  switch (utils.platform()) {
+    case 'darwin':
+      return `script -q /dev/null ${bsbCommand} -make-world -color`
+    case 'linux':
+      return `script --return -qfc "${bsbCommand} -make-world -color" /dev/null`
+    case 'wsl':
+      return `${bsbCommand} -make-world`
+    default:
+      return `${bsbCommand} -make-world`
   }
-}
+})()
 
 /**
  * Runs `bsb` async
  */
-function runBuild(cwd /*: string */ = CWD) /*: Promise<string> */ {
+function runBuild(cwd /*: string */) /*: Promise<string> */ {
   return new Promise((resolve, reject) => {
     exec(bsb, { maxBuffer: Infinity, cwd }, (err, stdout, stderr) => {
       const output = `${stdout.toString()}\n${stderr.toString()}`

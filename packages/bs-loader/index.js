@@ -81,7 +81,7 @@ module.exports = function loader() {
           this.emitError(errors[i])
         }
 
-        callback(new Error(errors[errors.length - 1]), null)
+        callback(errors[errors.length - 1], null)
       } else {
         callback(null, src || '')
       }
