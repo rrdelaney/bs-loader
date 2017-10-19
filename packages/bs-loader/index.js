@@ -76,11 +76,15 @@ module.exports = function loader() {
         })
       }
 
-      errors.slice().forEach(message => {
-        this.emitError(message)
-      })
+      if (errors.length > 0) {
+        for (let i = 0; i < errors.length - 1; ++i) {
+          this.emitError(errors[i])
+        }
 
-      callback(null, src || '')
+        callback(new Error(errors[errors.length - 1]), null)
+      } else {
+        callback(null, src || '')
+      }
     })
 }
 
