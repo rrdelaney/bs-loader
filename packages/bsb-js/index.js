@@ -108,7 +108,7 @@ function compileFile(
     buildRuns[id] = runBuild(buildDir)
   }
 
-  const buildProcess = id ? buildRuns[id] : runBuild()
+  const buildProcess = id ? buildRuns[id] : runBuild(buildDir)
 
   return buildProcess
     .then(
