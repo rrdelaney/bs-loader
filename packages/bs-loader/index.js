@@ -21,7 +21,7 @@ function jsFilePath(buildDir, moduleDir, resourcePath, inSource, bsSuffix) {
   return path.join(buildDir, outputDir, moduleDir, jsFileName)
 }
 
-/*:: type Options = { moduleDir: BsModuleFormat | 'js', inSource: boolean } */
+/*:: type Options = { moduleDir: BsModuleFormat | 'js', inSource: boolean, suffix: string } */
 
 function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
   return readBsConfig(buildDir).then(bsconfig => {
@@ -40,7 +40,10 @@ function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
     const inSource =
       typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
 
-    const options /*: Options */ = { moduleDir, inSource }
+    const bsSuffix = bsconfig.suffix
+    const suffix = typeof bsSuffix === 'string' ? bsSuffix : '.js'
+
+    const options /*: Options */ = { moduleDir, inSource, suffix }
     return options
   })
 }
@@ -57,7 +60,7 @@ module.exports = function loader() {
   getBsConfigModuleOptions(buildDir)
     .then(bsconfig => {
       const moduleDir = bsconfig.moduleDir
-      const bsSuffix = bsconfig.suffix || '.js'
+      const bsSuffix = bsconfig.suffix
 
       const inSourceBuild = options.inSource || bsconfig.inSource || false
 
