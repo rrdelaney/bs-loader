@@ -29,8 +29,15 @@ function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
       throw new Error(`bsconfig not found in ${buildDir}`)
     }
 
+    const bsSuffix = bsconfig.suffix
+    const suffix = typeof bsSuffix === 'string' ? bsSuffix : '.js'
+
     if (!bsconfig['package-specs'] || !bsconfig['package-specs'].length) {
-      const options /*: Options */ = { moduleDir: 'js', inSource: false }
+      const options /*: Options */ = {
+        moduleDir: 'js',
+        inSource: false,
+        suffix
+      }
       return options
     }
 
@@ -39,9 +46,6 @@ function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
       typeof moduleSpec === 'string' ? moduleSpec : moduleSpec.module
     const inSource =
       typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
-
-    const bsSuffix = bsconfig.suffix
-    const suffix = typeof bsSuffix === 'string' ? bsSuffix : '.js'
 
     const options /*: Options */ = { moduleDir, inSource, suffix }
     return options
