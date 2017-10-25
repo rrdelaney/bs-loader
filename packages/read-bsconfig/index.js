@@ -51,7 +51,8 @@ export type BsConfig = {
   'use-stdlib': boolean,
   'bs-external-includes': string[],
   refmt: string,
-  'refmt-flags': string[]
+  'refmt-flags': string[],
+  suffix: string
 }
 */
 
