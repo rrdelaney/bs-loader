@@ -10,7 +10,7 @@ const { compileFile, compileFileSync } = require('bsb-js')
 const outputDir = 'lib'
 const fileNameRegex = /\.(ml|re)$/
 
-function jsFilePath(buildDir, moduleDir, resourcePath, inSource) {
+function jsFilePath(buildDir, moduleDir, resourcePath, inSource, bsSuffix) {
   const mlFileName = resourcePath.replace(buildDir, '')
   const jsFileName = mlFileName.replace(fileNameRegex, '.js')
 
@@ -57,6 +57,7 @@ module.exports = function loader() {
   getBsConfigModuleOptions(buildDir)
     .then(bsconfig => {
       const moduleDir = bsconfig.moduleDir
+      const bsSuffix = bsconfig.suffix || '.js'
 
       const inSourceBuild = options.inSource || bsconfig.inSource || false
 
@@ -64,7 +65,8 @@ module.exports = function loader() {
         buildDir,
         moduleDir,
         this.resourcePath,
-        inSourceBuild
+        inSourceBuild,
+        bsSuffix
       )
 
       return compileFile(buildDir, moduleDir, compiledFilePath)
@@ -91,7 +93,13 @@ module.exports.process = function process(
   filename /*: string */
 ) {
   const moduleDir = 'js'
-  const compiledFilePath = jsFilePath(process.cwd(), moduleDir, filename, false)
+  const compiledFilePath = jsFilePath(
+    process.cwd(),
+    moduleDir,
+    filename,
+    false,
+    '.js'
+  )
 
   return compileFileSync(moduleDir, compiledFilePath)
 }
