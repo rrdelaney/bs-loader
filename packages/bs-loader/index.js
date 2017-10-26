@@ -10,7 +10,7 @@ const { compileFile, compileFileSync } = require('bsb-js')
 const outputDir = 'lib'
 const fileNameRegex = /\.(ml|re)$/
 
-function jsFilePath(buildDir, moduleDir, resourcePath, inSource) {
+function jsFilePath(buildDir, moduleDir, resourcePath, inSource, bsSuffix) {
   const mlFileName = resourcePath.replace(buildDir, '')
   const jsFileName = mlFileName.replace(fileNameRegex, '.js')
 
@@ -21,7 +21,7 @@ function jsFilePath(buildDir, moduleDir, resourcePath, inSource) {
   return path.join(buildDir, outputDir, moduleDir, jsFileName)
 }
 
-/*:: type Options = { moduleDir: BsModuleFormat | 'js', inSource: boolean } */
+/*:: type Options = { moduleDir: BsModuleFormat | 'js', inSource: boolean, suffix: string } */
 
 function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
   return readBsConfig(buildDir).then(bsconfig => {
@@ -29,8 +29,15 @@ function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
       throw new Error(`bsconfig not found in ${buildDir}`)
     }
 
+    const bsSuffix = bsconfig.suffix
+    const suffix = typeof bsSuffix === 'string' ? bsSuffix : '.js'
+
     if (!bsconfig['package-specs'] || !bsconfig['package-specs'].length) {
-      const options /*: Options */ = { moduleDir: 'js', inSource: false }
+      const options /*: Options */ = {
+        moduleDir: 'js',
+        inSource: false,
+        suffix
+      }
       return options
     }
 
@@ -40,7 +47,7 @@ function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
     const inSource =
       typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
 
-    const options /*: Options */ = { moduleDir, inSource }
+    const options /*: Options */ = { moduleDir, inSource, suffix }
     return options
   })
 }
@@ -57,6 +64,7 @@ module.exports = function loader() {
   getBsConfigModuleOptions(buildDir)
     .then(bsconfig => {
       const moduleDir = bsconfig.moduleDir
+      const bsSuffix = bsconfig.suffix
 
       const inSourceBuild = options.inSource || bsconfig.inSource || false
 
@@ -64,7 +72,8 @@ module.exports = function loader() {
         buildDir,
         moduleDir,
         this.resourcePath,
-        inSourceBuild
+        inSourceBuild,
+        bsSuffix
       )
 
       return compileFile(buildDir, moduleDir, compiledFilePath)
@@ -91,7 +100,13 @@ module.exports.process = function process(
   filename /*: string */
 ) {
   const moduleDir = 'js'
-  const compiledFilePath = jsFilePath(process.cwd(), moduleDir, filename, false)
+  const compiledFilePath = jsFilePath(
+    process.cwd(),
+    moduleDir,
+    filename,
+    false,
+    '.js'
+  )
 
   return compileFileSync(moduleDir, compiledFilePath)
 }
