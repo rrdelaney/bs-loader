@@ -1,13 +1,9 @@
 {
   "name": "hello",
-  "sources": [
-    "src"
-  ],
-  "bs-dependencies": [
-    "reason-react",
-    "bs-jest"
-  ],
+  "sources": ["src"],
+  "bs-dependencies": ["reason-react", "bs-jest"],
   "reason": {
     "react-jsx": 2
-  }
+  },
+  "refmt": 3
 }
