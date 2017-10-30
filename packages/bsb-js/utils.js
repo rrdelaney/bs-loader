@@ -35,13 +35,12 @@ function transformSrc(
 
 function processBsbError(err /*: Error | string */) {
   if (typeof err === 'string') {
-    return (
-      err.match(
-        err.includes('-bs-super-errors') ? getSuperErrorRegex : getErrorRegex
-      ) || []
-    )
+    return (err.match(
+      err.includes('-bs-super-errors') ? getSuperErrorRegex : getErrorRegex
+    ) || []
+    ).map(e => new Error(e))
   } else if (err instanceof Error) {
-    return [err.message]
+    return [err]
   } else {
     return []
   }
