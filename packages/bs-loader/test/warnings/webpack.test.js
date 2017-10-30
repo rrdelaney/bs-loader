@@ -4,6 +4,8 @@ const fs = require('fs')
 const os = require('os')
 const { exec } = require('child_process')
 
+require('child_process').execSync('npm link bs-platform')
+
 const output = path.join(__dirname, 'output', 'webpack')
 const loader = path.join(__dirname, '..', '..')
 
@@ -47,7 +49,7 @@ const bsb =
 
 it('runs', done => {
   exec(bsb, { maxBuffer: Infinity, cwd: __dirname }, (err, stdout, stderr) => {
-    if(err) {
+    if (err) {
       done(err)
       return
     }

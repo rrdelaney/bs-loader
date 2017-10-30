@@ -1,5 +1,6 @@
 {
   "name": "simple-test",
   "sources": ["fixtures"],
-  "package-specs": ["es6"]
+  "package-specs": ["es6"],
+  "refmt": 3
 }

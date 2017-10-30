@@ -2,5 +2,6 @@
   "name": "warnings-super-test",
   "sources": ["fixtures"],
   "package-specs": ["es6"],
-  "bsc-flags": [ "-bs-super-errors" ]
+  "bsc-flags": ["-bs-super-errors"],
+  "refmt": 3
 }

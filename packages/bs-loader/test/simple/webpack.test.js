@@ -2,6 +2,8 @@ const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
 
+require('child_process').execSync('npm link bs-platform')
+
 const output = path.join(__dirname, 'output', 'webpack')
 const loader = path.join(__dirname, '..', '..')
 

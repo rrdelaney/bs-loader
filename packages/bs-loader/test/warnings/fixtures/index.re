@@ -1,5 +1,7 @@
-type a = One | Two;
+type a =
+  | One
+  | Two;
 
 switch One {
-    | One => "One"
+| One => "One"
 };

@@ -1,1 +1,1 @@
-let add x y => x + y;
+let add = (x, y) => x + y;
