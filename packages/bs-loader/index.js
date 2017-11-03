@@ -99,7 +99,7 @@ module.exports = function loader() {
 
 /*:: declare var c: WebpackLoaderThis; module.exports.call(c) */
 
-module.exports.process = function process(
+module.exports.process = function bsLoaderProcess(
   src /*: string */,
   filename /*: string */
 ) {
