@@ -1,6 +1,22 @@
 # bs-loader [![Build Status](https://travis-ci.org/reasonml-community/bs-loader.svg?branch=master)](https://travis-ci.org/reasonml-community/bs-loader)
 > Bucklescript loader for Webpack
 
+---
+**This library is in maintanence mode. Instead of using bs-loader we recommend
+using bsb' new in-source builds in conjunction with .bs.js extensions:**
+
+```json
+// bcsconfig.json
+{
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+}
+```
+
+---
 This works with both Reason and OCaml files
 
 ## Installation
