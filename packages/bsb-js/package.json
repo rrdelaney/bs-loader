@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reasonml-community/reason-scripts.git"
+    "url": "git+https://github.com/reasonml-community/bs-loader.git"
   },
   "keywords": [
     "bsb",
