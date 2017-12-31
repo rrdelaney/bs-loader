@@ -12,7 +12,7 @@ const fileNameRegex = /\.(ml|re)$/
 
 function jsFilePath(buildDir, moduleDir, resourcePath, inSource, bsSuffix) {
   const mlFileName = resourcePath.replace(buildDir, '')
-  const jsFileName = mlFileName.replace(fileNameRegex, '.js')
+  const jsFileName = mlFileName.replace(fileNameRegex, bsSuffix)
 
   if (inSource) {
     return path.join(buildDir, jsFileName)
