@@ -1,6 +1,6 @@
 {
   "name": "read-bsconfig",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Library for reading the bsconfig.json for BuckleScript",
   "main": "index.js",
   "scripts": {
