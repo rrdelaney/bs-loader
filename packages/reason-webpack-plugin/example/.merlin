@@ -1,11 +1,10 @@
 ####{BSB GENERATED: NO EDIT
-FLG -ppx '/usr/local/lib/node_modules/bs-platform/bin/reactjs_jsx_ppx.exe'
-FLG -ppx /usr/local/lib/node_modules/bs-platform/bin/bsppx.exe
-S /Users/ryan/Documents/dev/reason-webpack-plugin/example/node_modules/bs-platform/lib/ocaml
-B /Users/ryan/Documents/dev/reason-webpack-plugin/example/node_modules/bs-platform/lib/ocaml
-FLG -nostdlib -no-alias-deps -color always -w -40+6+7+27+32..39+44+45
+FLG -ppx '/Users/ryan/Documents/dev/bs-loader/packages/reason-webpack-plugin/example/node_modules/bs-platform/lib/reactjs_jsx_ppx_2.exe'
+FLG -ppx /Users/ryan/Documents/dev/bs-loader/packages/reason-webpack-plugin/example/node_modules/bs-platform/lib/bsppx.exe
+S /Users/ryan/Documents/dev/bs-loader/packages/reason-webpack-plugin/example/node_modules/bs-platform/lib/ocaml
+B /Users/ryan/Documents/dev/bs-loader/packages/reason-webpack-plugin/example/node_modules/bs-platform/lib/ocaml
+FLG -nostdlib -no-alias-deps -color always
+FLG -w -30-40+6+7+27+32..39+44+45+101
 S src
 B lib/bs/src
-S types
-B lib/bs/types
 ####BSB GENERATED: NO EDIT}

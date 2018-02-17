@@ -26,9 +26,7 @@ const bsb = (() => {
   }
 })()
 
-/**
- * Runs `bsb` async
- */
+/** Runs `bsb` async */
 function runBuild(cwd /*: string */) /*: Promise<string> */ {
   return new Promise((resolve, reject) => {
     exec(bsb, { maxBuffer: Infinity, cwd }, (err, stdout, stderr) => {
@@ -42,9 +40,7 @@ function runBuild(cwd /*: string */) /*: Promise<string> */ {
   })
 }
 
-/**
- * Runs `bsb`
- */
+/** Runs `bsb` */
 function runBuildSync() {
   const output = execSync(bsb, { stdio: 'pipe' })
 
@@ -61,9 +57,7 @@ type Compilation = {
 
 const buildRuns /*: { [buildId: string]: Promise<string> } */ = {}
 
-/**
- * Compiles a Reason file to JS
- */
+/** Compiles a Reason file to JS */
 function compileFile(
   buildDir /*: string */,
   moduleType /*: BsModuleFormat | 'js' */,
@@ -106,9 +100,7 @@ function compileFile(
     }))
 }
 
-/**
- * Compiles a Reason file to JS sync
- */
+/** Compiles a Reason file to JS sync */
 function compileFileSync(
   moduleType /*: BsModuleFormat | 'js' */,
   path /*: string */

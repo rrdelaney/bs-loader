@@ -12,6 +12,7 @@
     "packages/bs-loader",
     "packages/read-bsconfig",
     "packages/bsb-js",
+    "packages/reason-types-webpack-plugin",
     "packages/reason-webpack-plugin"
   ],
   "jest": {

@@ -1,0 +1,26 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "build": "webpack",
+    "flow": "flow"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-loader": "^7.0.0",
+    "babel-preset-react-app": "^3.0.0",
+    "bs-loader": "^1.6.0",
+    "bs-platform": "^1.7.4",
+    "flow-bin": "^0.54.0",
+    "get-typed": "^1.0.0-beta.2",
+    "webpack": "^3.5.5"
+  },
+  "dependencies": {
+    "reasonable-flowgen": "^0.1.5"
+  }
+}

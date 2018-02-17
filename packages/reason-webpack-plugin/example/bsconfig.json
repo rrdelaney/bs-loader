@@ -1,10 +1,14 @@
 {
-  "name": "example",
-  "sources": ["types", "src"],
-  "bs-dependencies": [],
+  "name": "reason-webpack-plugin-example",
+  "sources": ["src"],
   "reason": {
-    "react-jsx": true
+    "react-jsx": 2
   },
-  "package-specs": ["es6"],
-  "bsc-flags": ["-bs-super-errors", "-bs-gen-tds"]
+  "bsc-flags": ["-bs-super-errors"],
+  "refmt": 3,
+  "package-specs": {
+    "module": "es6",
+    "in-source": true
+  },
+  "suffix": ".bs.js"
 }
