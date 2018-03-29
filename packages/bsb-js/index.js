@@ -6,12 +6,17 @@ const { readFile, readFileSync } = require('fs')
 const utils = require('./utils')
 /*:: import type { BsModuleFormat } from 'read-bsconfig' */
 
-let bsbCommand
-try {
-  bsbCommand = require.resolve('bs-platform/bin/bsb.exe')
-} catch (e) {
-  bsbCommand = `bsb`
+let bsbCommand;
+const bsbLocations = ['.bin/bsb', 'bs-platform/bin/bsb.exe'];
+for (var i = 0; i < bsbLocations.length; ++i) {
+  try {
+    bsbCommand = require.resolve(bsbLocations[i]);
+    break;
+  } catch (e) {
+  }
 }
+bsbCommand = bsbCommand || `bsb`;
+
 
 const bsb = (() => {
   switch (utils.platform()) {
