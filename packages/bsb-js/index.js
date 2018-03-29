@@ -7,7 +7,7 @@ const utils = require('./utils')
 /*:: import type { BsModuleFormat } from 'read-bsconfig' */
 
 let bsbCommand;
-const bsbLocations = ['.bin/bsb', 'bs-platform/bin/bsb.exe'];
+const bsbLocations = ['bs-platform/bin/bsb.exe', '.bin/bsb', '.bin/bsb.exe'];
 for (var i = 0; i < bsbLocations.length; ++i) {
   try {
     bsbCommand = require.resolve(bsbLocations[i]);
