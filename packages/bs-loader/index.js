@@ -41,7 +41,9 @@ function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
       return options
     }
 
-    const moduleSpec = bsconfig['package-specs'][0]
+    const packageSpecs = bsconfig['package-specs']
+    const moduleSpec =
+      packageSpecs instanceof Array ? packageSpecs[0] : packageSpecs
     const moduleDir /*: BsModuleFormat */ =
       typeof moduleSpec === 'string' ? moduleSpec : moduleSpec.module
     const inSource =

@@ -42,7 +42,7 @@ export type BsConfig = {
   'bsc-flags': string[],
   'ppx-flags': string[],
   'js-post-build': BsJsPostBuild,
-  'package-specs': BsPackageSpec[],
+  'package-specs': BsPackageSpec|BsPackageSpec[],
   ocamllex: string,
   ocamlyacc: string,
   menhir: string,
