@@ -32,7 +32,7 @@ function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
     const bsSuffix = bsconfig.suffix
     const suffix = typeof bsSuffix === 'string' ? bsSuffix : '.js'
 
-    if (!bsconfig['package-specs'] || !bsconfig['package-specs'].length) {
+    if (!bsconfig['package-specs']) {
       const options /*: Options */ = {
         moduleDir: 'js',
         inSource: false,
