@@ -1,6 +1,6 @@
 {
   "name": "bsb-js",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "JS library wrapping BuckleScript build",
   "main": "index.js",
   "scripts": {
@@ -10,12 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/reasonml-community/bs-loader.git"
   },
-  "keywords": [
-    "bsb",
-    "bucklescript",
-    "reason",
-    "reasonml"
-  ],
+  "keywords": ["bsb", "bucklescript", "reason", "reasonml"],
   "author": "Ryan Delaney <rrdelaney@outlook.com>",
   "license": "MIT",
   "bugs": {
