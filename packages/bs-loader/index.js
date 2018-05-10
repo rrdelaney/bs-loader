@@ -1,9 +1,10 @@
 // @flow
 
-const { readBsConfig } = require('read-bsconfig')
+const {readBsConfig, readBsConfigSync} = require('read-bsconfig')
 const path = require('path')
-const { getOptions } = require('loader-utils')
-const { compileFile, compileFileSync } = require('bsb-js')
+const {getOptions} = require('loader-utils')
+const {compileFile, compileFileSync} = require('bsb-js')
+const babel = require('@babel/core')
 /*:: import type { BsModuleFormat } from 'read-bsconfig' */
 /*:: import type { WebpackLoaderThis } from 'webpack' */
 
@@ -23,34 +24,38 @@ function jsFilePath(buildDir, moduleDir, resourcePath, inSource, bsSuffix) {
 
 /*:: type Options = { moduleDir: BsModuleFormat | 'js', inSource: boolean, suffix: string } */
 
+function bsconfigToOptions(bsconfig) /*: Options */ {
+  const bsSuffix = bsconfig.suffix
+  const suffix = typeof bsSuffix === 'string' ? bsSuffix : '.js'
+
+  if (!bsconfig['package-specs']) {
+    const options /*: Options */ = {
+      moduleDir: 'js',
+      inSource: false,
+      suffix,
+    }
+    return options
+  }
+
+  const packageSpecs = bsconfig['package-specs']
+  const moduleSpec =
+    packageSpecs instanceof Array ? packageSpecs[0] : packageSpecs
+  const moduleDir /*: BsModuleFormat */ =
+    typeof moduleSpec === 'string' ? moduleSpec : moduleSpec.module
+  const inSource =
+    typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
+
+  const options /*: Options */ = {moduleDir, inSource, suffix}
+  return options
+}
+
 function getBsConfigModuleOptions(buildDir) /*: Promise<Options> */ {
   return readBsConfig(buildDir).then(bsconfig => {
     if (!bsconfig) {
       throw new Error(`bsconfig not found in ${buildDir}`)
     }
 
-    const bsSuffix = bsconfig.suffix
-    const suffix = typeof bsSuffix === 'string' ? bsSuffix : '.js'
-
-    if (!bsconfig['package-specs']) {
-      const options /*: Options */ = {
-        moduleDir: 'js',
-        inSource: false,
-        suffix
-      }
-      return options
-    }
-
-    const packageSpecs = bsconfig['package-specs']
-    const moduleSpec =
-      packageSpecs instanceof Array ? packageSpecs[0] : packageSpecs
-    const moduleDir /*: BsModuleFormat */ =
-      typeof moduleSpec === 'string' ? moduleSpec : moduleSpec.module
-    const inSource =
-      typeof moduleSpec === 'string' ? false : moduleSpec['in-source']
-
-    const options /*: Options */ = { moduleDir, inSource, suffix }
-    return options
+    return bsconfigToOptions(bsconfig)
   })
 }
 
@@ -75,12 +80,12 @@ module.exports = function loader() {
         moduleDir,
         this.resourcePath,
         inSourceBuild,
-        bsSuffix
+        bsSuffix,
       )
 
       return compileFile(buildDir, moduleDir, compiledFilePath)
     })
-    .then(({ src, warnings, errors }) => {
+    .then(({src, warnings, errors}) => {
       if (showWarnings) {
         warnings.forEach(message => {
           this.emitWarning(new Error(message))
@@ -103,16 +108,31 @@ module.exports = function loader() {
 
 module.exports.process = function bsLoaderProcess(
   src /*: string */,
-  filename /*: string */
+  filename /*: string */,
+  cwd /*: ?string */,
 ) {
+  const bsconfig = readBsConfigSync(cwd || undefined)
+  const options = bsconfigToOptions(bsconfig)
+  const inSourceBuild = options.inSource || false
+  const bsSuffix = options.suffix
   const moduleDir = 'js'
   const compiledFilePath = jsFilePath(
-    process.cwd(),
+    cwd || process.cwd(),
     moduleDir,
     filename,
-    false,
-    '.js'
+    inSourceBuild,
+    bsSuffix,
   )
 
-  return compileFileSync(moduleDir, compiledFilePath)
+  const jsSource = compileFileSync(
+    cwd || process.cwd(),
+    moduleDir,
+    compiledFilePath,
+  )
+
+  const transformed = babel.transform(jsSource, {
+    plugins: ['@babel/plugin-transform-modules-commonjs'],
+  })
+
+  return transformed.code
 }

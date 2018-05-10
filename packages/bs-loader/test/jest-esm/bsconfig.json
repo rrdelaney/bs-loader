@@ -1,0 +1,11 @@
+{
+  "name": "insource-test",
+  "sources": ["fixtures"],
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": true
+    }
+  ],
+  "refmt": 3
+}

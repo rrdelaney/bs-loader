@@ -27,6 +27,8 @@
   },
   "homepage": "https://github.com/reasonml-community/reason-scripts#readme",
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.46",
     "bsb-js": "^1.0.0",
     "loader-utils": "^1.1.0",
     "read-bsconfig": "^1.0.1"

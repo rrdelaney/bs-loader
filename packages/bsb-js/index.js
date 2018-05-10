@@ -1,8 +1,8 @@
 // @flow
 
 const os = require('os')
-const { exec, execSync } = require('child_process')
-const { readFile, readFileSync } = require('fs')
+const {exec, execSync} = require('child_process')
+const {readFile, readFileSync} = require('fs')
 const utils = require('./utils')
 /*:: import type { BsModuleFormat } from 'read-bsconfig' */
 
@@ -29,7 +29,7 @@ const bsb = (() => {
 /** Runs `bsb` async */
 function runBuild(cwd /*: string */) /*: Promise<string> */ {
   return new Promise((resolve, reject) => {
-    exec(bsb, { maxBuffer: Infinity, cwd }, (err, stdout, stderr) => {
+    exec(bsb, {maxBuffer: Infinity, cwd}, (err, stdout, stderr) => {
       const output = `${stdout.toString()}\n${stderr.toString()}`
       if (err) {
         reject(output)
@@ -41,8 +41,8 @@ function runBuild(cwd /*: string */) /*: Promise<string> */ {
 }
 
 /** Runs `bsb` */
-function runBuildSync() {
-  const output = execSync(bsb, { stdio: 'pipe' })
+function runBuildSync(cwd /*: string */) /*: string  */ {
+  const output = execSync(bsb, {stdio: 'pipe', cwd})
 
   return output.toString()
 }
@@ -62,7 +62,7 @@ function compileFile(
   buildDir /*: string */,
   moduleType /*: BsModuleFormat | 'js' */,
   path /*: string */,
-  id /*: ?string */ = null
+  id /*: ?string */ = null,
 ) /*: Promise<Compilation> */ {
   if (id && buildRuns[id] !== undefined) {
     buildRuns[id] = runBuild(buildDir)
@@ -79,7 +79,7 @@ function compileFile(
               resolve({
                 src: undefined,
                 warnings: [],
-                errors: [err]
+                errors: [err],
               })
             } else {
               const src = utils.transformSrc(moduleType, res.toString())
@@ -87,26 +87,27 @@ function compileFile(
               resolve({
                 src,
                 warnings: utils.processBsbWarnings(output),
-                errors: []
+                errors: [],
               })
             }
           })
-        })
+        }),
     )
     .catch(err => ({
       src: undefined,
       warnings: [],
-      errors: utils.processBsbError(err)
+      errors: utils.processBsbError(err),
     }))
 }
 
 /** Compiles a Reason file to JS sync */
 function compileFileSync(
+  buildDir /*: string */,
   moduleType /*: BsModuleFormat | 'js' */,
-  path /*: string */
+  path /*: string */,
 ) /*: string */ {
   try {
-    runBuildSync()
+    runBuildSync(buildDir)
   } catch (e) {
     throw utils.processBsbError(e.output.toString())
   }
@@ -120,5 +121,5 @@ module.exports = {
   runBuild,
   runBuildSync,
   compileFile,
-  compileFileSync
+  compileFileSync,
 }

@@ -2,9 +2,11 @@ const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
 const os = require('os')
-const { exec } = require('child_process')
+const {exec} = require('child_process')
 
-require('child_process').execSync('npm link bs-platform')
+try {
+  require('child_process').execSync('npm link bs-platform')
+} catch (e) {}
 
 const output = path.join(__dirname, 'output', 'webpack')
 const loader = path.join(__dirname, '..', '..')
@@ -18,19 +20,19 @@ const baseConfig = {
         use: {
           loader,
           options: {
-            cwd: __dirname
-          }
-        }
-      }
-    ]
+            cwd: __dirname,
+          },
+        },
+      },
+    ],
   },
   resolve: {
-    extensions: ['.re', '.ml', '.js']
+    extensions: ['.re', '.ml', '.js'],
   },
   output: {
     path: output,
-    libraryTarget: 'commonjs2'
-  }
+    libraryTarget: 'commonjs2',
+  },
 }
 
 let bsbCommand
@@ -48,7 +50,7 @@ const bsb =
       : `${bsbCommand} -clean-world`
 
 it('runs', done => {
-  exec(bsb, { maxBuffer: Infinity, cwd: __dirname }, (err, stdout, stderr) => {
+  exec(bsb, {maxBuffer: Infinity, cwd: __dirname}, (err, stdout, stderr) => {
     if (err) {
       done(err)
       return

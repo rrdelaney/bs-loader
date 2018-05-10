@@ -2,7 +2,9 @@ const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
 
-require('child_process').execSync('npm link bs-platform')
+try {
+  require('child_process').execSync('npm link bs-platform')
+} catch (e) {}
 
 const output = path.join(__dirname, 'output', 'webpack')
 const loader = path.join(__dirname, '..', '..')
@@ -18,19 +20,19 @@ const baseConfig = {
           options: {
             module: 'es6',
             inSource: true,
-            cwd: __dirname
-          }
-        }
-      }
-    ]
+            cwd: __dirname,
+          },
+        },
+      },
+    ],
   },
   resolve: {
-    extensions: ['.re', '.ml', '.js']
+    extensions: ['.re', '.ml', '.js'],
   },
   output: {
     path: output,
-    libraryTarget: 'commonjs2'
-  }
+    libraryTarget: 'commonjs2',
+  },
 }
 
 it('runs', done => {
