@@ -8,7 +8,7 @@ const utils = require('./utils')
 
 let bsbCommand
 try {
-  bsbCommand = require.resolve('bs-platform/bin/bsb.exe')
+  bsbCommand = require.resolve('bs-platform/lib/bsb.exe')
 } catch (e) {
   bsbCommand = `bsb`
 }
