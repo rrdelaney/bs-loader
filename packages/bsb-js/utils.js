@@ -26,7 +26,7 @@ function platform() /*: 'darwin' | 'linux' | 'wsl' | null */ {
 
 function transformSrc(
   moduleType /*: BsModuleFormat | 'js' */,
-  src /*: string */
+  src /*: string */,
 ) {
   const replacer = moduleType === 'es6' ? es6ReplaceRegex : commonJsReplaceRegex
 
@@ -35,9 +35,10 @@ function transformSrc(
 
 function processBsbError(err /*: Error | string */) {
   if (typeof err === 'string') {
-    return (err.match(
-      err.includes('-bs-super-errors') ? getSuperErrorRegex : getErrorRegex
-    ) || []
+    return (
+      err.match(getSuperErrorRegex) ||
+      err.match(getErrorRegex) ||
+      []
     ).map(e => new Error(e))
   } else if (err instanceof Error) {
     return [err]
@@ -54,5 +55,5 @@ module.exports = {
   platform,
   transformSrc,
   processBsbError,
-  processBsbWarnings
+  processBsbWarnings,
 }
