@@ -6,7 +6,7 @@ const os = require('os')
 const fileNameRegex = /\.(ml|re)$/
 const es6ReplaceRegex = /(from\ "\.\.?\/.*?)(\.bs\.js|\.js)("\;)/g
 const commonJsReplaceRegex = /(require\("\.\.?\/.*?)(\.bs\.js|\.js)("\);)/g
-const getErrorRegex = /(File [\s\S]*?:\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\n\n|$)/g
+const getErrorRegex = /(File [\s\S]*?:\r?\n|Fatal )[eE]rror: [\s\S]*?(?=ninja|\r?\n\r?\n|$)/g
 const getSuperErrorRegex = /We've found a bug for you![\s\S]*?(?=ninja: build stopped)/g
 const getWarningRegex = /((File [\s\S]*?Warning.+? \d+:)|Warning number \d+)[\s\S]*?(?=\[\d+\/\d+\]|$)/g
 
