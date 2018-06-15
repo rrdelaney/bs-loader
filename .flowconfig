@@ -11,4 +11,5 @@ all=warn
 untyped-type-import=error
 
 [options]
+suppress_comment=\\(.\\|\n\\)*\\$FlowIssue
 emoji=true

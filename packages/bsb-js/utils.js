@@ -39,10 +39,11 @@ function transformSrc(
 // process said error according to known formats, but we default to what we
 // got as an argument if they don't match. This way we always throw an error,
 // thus avoiding successful builds if something has gone wrong.
-function processBsbError(err /*: Error | string */) {
+function processBsbError(err /*: Error | string */) /*: Error[] */ {
   if (typeof err === 'string') {
     const errors = errorRegexes
-      .map(r => err.match(r))
+    // $FlowIssue: err is definitely a string
+      .map((r /*: RegExp */) => err.match(r))
       .reduce((a, s) => a.concat(s), [])
       .filter(x => x)
 
