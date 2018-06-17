@@ -109,8 +109,11 @@ module.exports = function loader() {
 module.exports.process = function bsLoaderProcess(
   src /*: string */,
   filename /*: string */,
-  cwd /*: ?string */,
+  curDirOrJestConfig /*: ?string */,
 ) {
+  // When this is used as Jest transform, we're passed an object that, among
+  // other properties, has a `rootDir` key
+  const cwd = typeof curDirOrJestConfig === 'string' ? curDirOrJestConfig : curDirOrJestConfig.rootDir;
   const bsconfig = readBsConfigSync(cwd || undefined)
   const options = bsconfigToOptions(bsconfig)
   const inSourceBuild = options.inSource || false
