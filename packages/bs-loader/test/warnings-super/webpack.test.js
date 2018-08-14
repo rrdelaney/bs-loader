@@ -44,9 +44,9 @@ try {
 
 const bsb =
   os.platform() === 'darwin'
-    ? `script -q /dev/null ${bsbCommand} -clean-world -color`
+    ? `script -q /dev/null ${bsbCommand} -clean-world`
     : os.platform() === 'linux'
-      ? `script --return -qfc "${bsbCommand} -clean-world -color" /dev/null`
+      ? `script --return -qfc "${bsbCommand} -clean-world" /dev/null`
       : `${bsbCommand} -clean-world`
 
 it('runs', done => {

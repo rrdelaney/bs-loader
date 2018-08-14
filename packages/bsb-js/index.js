@@ -16,9 +16,9 @@ try {
 const bsb = (() => {
   switch (utils.platform()) {
     case 'darwin':
-      return `script -q /dev/null ${bsbCommand} -make-world -color`
+      return `script -q /dev/null ${bsbCommand} -make-world`
     case 'linux':
-      return `script --return -qfc "${bsbCommand} -make-world -color" /dev/null`
+      return `script --return -qfc "${bsbCommand} -make-world" /dev/null`
     case 'wsl':
       return `${bsbCommand} -make-world`
     default:
