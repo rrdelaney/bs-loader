@@ -2,8 +2,8 @@
   "name": "reason-tooling",
   "private": true,
   "devDependencies": {
-    "flow-bin": "^0.74.0",
-    "jest-cli": "^21.1.0"
+    "flow-bin": "^0.82.0",
+    "jest-cli": "^23.6.0"
   },
   "scripts": {
     "test": "flow && jest"

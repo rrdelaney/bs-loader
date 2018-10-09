@@ -19,15 +19,15 @@
   },
   "homepage": "https://github.com/reasonml-community/reason-scripts#readme",
   "dependencies": {
-    "@babel/core": "^7.0.0-beta.46",
-    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.46",
+    "@babel/core": "7.1.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
     "bsb-js": "^1.0.0",
     "loader-utils": "^1.1.0",
     "read-bsconfig": "^1.0.1"
   },
   "devDependencies": {
-    "jest": "^21.0.1",
-    "webpack": "^3.5.4"
+    "jest": "^23.6.0",
+    "webpack": "^3.12.0"
   },
   "jest": {
     "testPathIgnorePatterns": ["/node_modules/", "/example/"]
